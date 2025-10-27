@@ -221,7 +221,7 @@ const RevenueManagement = () => {
     // 振込時の手数料を計算（クリエイター売上から）
     // システム利用料 = 15% + 消費税10% = 16.5%
     const systemFee = Math.floor(creatorPayments * 0.165); // 16.5% システム利用料（税込）
-    const transferFee = creatorPayments > 0 ? 330 : 0; // 振込手数料（売上がある場合のみ）
+    const transferFee = 0; // 振込申請機能実装後に1件あたり¥330を計算
     const transferRevenue = systemFee + transferFee; // 振込時収益
     const actualTransferAmount = creatorPayments - systemFee - transferFee; // 実振込額
     
