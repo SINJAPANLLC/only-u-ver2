@@ -790,8 +790,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         );
 
         // Get the actual storage path for reference
-        const objectFile = await objectStorageService.getObjectEntityFile(objectPath);
-        storagePath = `gs://${objectFile.bucket.name}/${objectFile.name}`;
+        const objectFilePath = await objectStorageService.getObjectEntityFile(objectPath);
+        const { storage } = await import('./firebase');
+        const bucket = storage.bucket();
+        storagePath = `gs://${bucket.name}/${objectFilePath}`;
         
         // Note: makePublic() is not available due to Public Access Prevention on Replit Object Storage
         // Files will be accessed via signed URLs or ACL policies instead
@@ -1085,31 +1087,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ error: 'No file provided' });
         }
 
-        const { ObjectStorageService, objectStorageClient } = await import('./objectStorage');
+        const { ObjectStorageService } = await import('./objectStorage');
+        const { storage: firebaseStorage } = await import('./firebase');
         const objectStorageService = new ObjectStorageService();
 
-        // Get public search paths
-        const publicPaths = await objectStorageService.getPublicObjectSearchPaths();
-        if (publicPaths.length === 0) {
-          return res.status(500).json({ error: 'Public object storage not configured' });
-        }
-
-        // Use first public path
-        const publicPath = publicPaths[0];
+        // Generate unique file name
         const { randomUUID } = await import('crypto');
         const fileId = randomUUID();
         const extension = file.mimetype.split('/')[1];
         const fileName = `slider-${fileId}.${extension}`;
-        const fullPath = `${publicPath}/${fileName}`;
 
-        // Parse path
-        const pathParts = fullPath.split('/');
-        const bucketName = pathParts[1];
-        const objectName = pathParts.slice(2).join('/');
-
-        // Upload file
-        const bucket = objectStorageClient.bucket(bucketName);
-        const blob = bucket.file(objectName);
+        // Upload to Firebase Storage
+        const bucket = firebaseStorage.bucket();
+        const blob = bucket.file(`public/${fileName}`);
 
         const blobStream = blob.createWriteStream({
           resumable: false,
@@ -1128,7 +1118,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           await blob.makePublic();
 
           // Return public URL
-          const imageUrl = `https://storage.googleapis.com/${bucketName}/${objectName}`;
+          const imageUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
           res.json({ imageUrl });
         });
 
@@ -1314,26 +1304,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log('Proxy request for:', folder, filename, 'Object path:', objectPath, 'Range:', req.headers.range);
       
-      // Import ObjectStorageService and Replit client
-      const { ObjectStorageService, replitClient } = await import("./objectStorage");
+      // Import ObjectStorageService
+      const { ObjectStorageService } = await import("./objectStorage");
+      const { storage } = await import('./firebase');
       const objectStorageService = new ObjectStorageService();
       
-      // Get the file from Object Storage (it will search in public/private dirs automatically)
-      const file = await objectStorageService.getObjectEntityFile(objectPath);
+      // Get the file path from Object Storage (it will search in public/private dirs automatically)
+      const filePath = await objectStorageService.getObjectEntityFile(objectPath);
       
-      // Get full file path for Replit SDK
-      const filePath = `/${file.bucket.name}/${file.name}`;
-      console.log('[Proxy] Downloading file via Replit SDK:', filePath);
+      console.log('[Proxy] Downloading file from Firebase Storage:', filePath);
       
-      // Download file using Replit SDK (has proper permissions)
-      // Replit SDK returns { ok: true, value: [Buffer] }
-      const result = await replitClient.downloadAsBytes(filePath);
+      // Download file from Firebase Storage
+      const bucket = storage.bucket();
+      const file = bucket.file(filePath);
+      const [fileBuffer] = await file.download();
       
-      if (!result.ok || !result.value || !result.value[0] || result.value[0].length === 0) {
+      if (!fileBuffer || fileBuffer.length === 0) {
         return res.status(404).json({ error: 'File not found' });
       }
       
-      const fileBuffer = result.value[0];
       console.log('[Proxy] Downloaded successfully, size:', fileBuffer.length, 'bytes');
       
       // Determine content type from filename

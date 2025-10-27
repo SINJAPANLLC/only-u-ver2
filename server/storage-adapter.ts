@@ -1,12 +1,12 @@
 /**
- * ストレージアダプター - Replit Object Storage、Cloudflare R2、AWS S3、GCSに対応
+ * ストレージアダプター - Firebase Storage、Cloudflare R2、AWS S3、GCSに対応
  * Hostingerデプロイ時は環境変数でストレージプロバイダーを切り替え可能
  */
 
-import { Client as ReplitClient } from '@replit/object-storage';
+// Replit Object Storageは削除し、Firebase Storageを使用
 
 // ストレージプロバイダーのタイプ
-type StorageProvider = 'replit' | 'r2' | 's3' | 'gcs';
+type StorageProvider = 'firebase' | 'r2' | 's3' | 'gcs';
 
 // 環境変数からストレージプロバイダーを判定
 const getStorageProvider = (): StorageProvider => {
@@ -19,8 +19,8 @@ const getStorageProvider = (): StorageProvider => {
   if (process.env.GCS_PROJECT_ID && process.env.GCS_BUCKET_NAME) {
     return 'gcs';
   }
-  // デフォルトはReplit Object Storage
-  return 'replit';
+  // デフォルトはFirebase Storage
+  return 'firebase';
 };
 
 // ストレージアダプターインターフェース
@@ -31,36 +31,33 @@ export interface StorageAdapter {
   getPublicUrl(key: string): string;
 }
 
-// Replit Object Storage アダプター
-class ReplitStorageAdapter implements StorageAdapter {
-  private client: ReplitClient;
+// Firebase Storage アダプター
+class FirebaseStorageAdapter implements StorageAdapter {
+  private bucket: any;
 
   constructor() {
-    this.client = new ReplitClient();
+    const { storage } = require('./firebase');
+    this.bucket = storage().bucket();
   }
 
   async upload(key: string, data: Buffer, contentType?: string): Promise<string> {
-    const publicKey = `public/${key}`;
-    await this.client.uploadFromBytes(publicKey, data);
+    const file = this.bucket.file(`public/${key}`);
+    await file.save(data, {
+      metadata: contentType ? { contentType } : undefined,
+    });
+    await file.makePublic();
     return this.getPublicUrl(key);
   }
 
   async download(key: string): Promise<Buffer> {
-    const publicKey = `public/${key}`;
-    const result = await this.client.downloadAsBytes(publicKey);
-    
-    if (result.error) {
-      throw new Error(`Failed to download from Replit Storage: ${JSON.stringify(result.error)}`);
-    }
-    
-    // result.value is [Buffer], so we take the first element
-    const [buffer] = result.value;
+    const file = this.bucket.file(`public/${key}`);
+    const [buffer] = await file.download();
     return buffer;
   }
 
   async delete(key: string): Promise<void> {
-    const publicKey = `public/${key}`;
-    await this.client.delete(publicKey);
+    const file = this.bucket.file(`public/${key}`);
+    await file.delete();
   }
 
   getPublicUrl(key: string): string {
@@ -199,9 +196,9 @@ export const createStorageAdapter = (): StorageAdapter => {
       return new S3StorageAdapter();
     case 'gcs':
       return new GCSStorageAdapter();
-    case 'replit':
+    case 'firebase':
     default:
-      return new ReplitStorageAdapter();
+      return new FirebaseStorageAdapter();
   }
 };
 
