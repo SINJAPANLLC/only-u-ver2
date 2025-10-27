@@ -1,0 +1,425 @@
+{
+    "languageSettings": "Language settings / Languages",
+    "notification1": "Credit card payment system screen notice",
+    "notification2": "Terms of Service Update Notice",
+    "termsOfUse": {
+        "title": "Terms of Use",
+        "chapter1": "Chapter 1: General Provisions",
+        "article1": {
+            "title": "Article 1 (Definitions)",
+            "description": "The following terms are defined as follows in these Terms:"
+        }
+    },
+    "profile": {
+        "posts": "Posts",
+        "likes": "Likes",
+        "followers": "Followers",
+        "following": "Following",
+        "subscribe": "Subscribe",
+        "follow": "Follow",
+        "message": "Message",
+        "tip": "Send a tip"
+    },
+    "filters": {
+        "all": "All",
+        "images": "Images",
+        "videos": "Videos",
+        "new": "New",
+        "popular": "Popular",
+        "old": "Old"
+    },
+    "account": {
+        "viewProfile": "View profile",
+        "purchaseSave": {
+            "title": "Purchase/Save",
+            "highQualityPlan": "High Quality Plan",
+            "notSubscribed": "Not subscribed",
+            "subscribedPlans": "Plan you are subscribed to",
+            "paymentMethods": "Payment methods",
+            "purchaseHistory": "Purchase history",
+            "amountAvailable": "Amount available for use"
+        },
+        "postsOperations": {
+            "title": "Posts/Operations/Sales",
+            "description": "By registering as a creator, you can post and manage your content as well as track your sales.",
+            "registerCreator": "Register as a creator"
+        },
+        "settings": {
+            "title": "Settings",
+            "language": "Language settings / Languages",
+            "rejectMessage": "Reject message",
+            "emailNotifications": "Email notification settings",
+            "following": "Following",
+            "blockedUsers": "Blocked users",
+            "referralProgram": "Referral Program",
+            "personalInfo": "Personal information (name, date of birth)",
+            "phoneVerification": "Phone number verification",
+            "notices": "Notices"
+        },
+        "about": {
+            "title": "About only-u",
+            "terms": "Terms of Use",
+            "privacy": "Privacy Policy",
+            "legal": "Legal Notice",
+            "help": "Help"
+        },
+        "other": {
+            "title": "Other reasons",
+            "switchAccount": "Switch account",
+            "logout": "Log out",
+            "login": "Log in",
+            "X": "Sign in with X",
+            "forgotps": "Forgot your password?",
+            "dha": "Don't have an account?",
+            "signup": "Sign up",
+            "logging": "Logging in...",
+            "logoutConfirmTitle": "Log out?",
+            "logoutConfirmText": "Are you sure you want to log out?",
+            "cancel": "Cancel",
+            "confirm": "Log out"
+        },
+        "placeholder": {
+            "email": "Email address",
+            "password": "Enter password"
+        }
+    },
+    "createPost": {
+        "title": "New post",
+        "upload": {
+            "button": "Images / Videos",
+            "selectedFiles": "Selected files"
+        },
+        "explanation": "Explanation",
+        "genre": {
+            "title": "Genre",
+            "subtitle": "(Please specify at least one)"
+        },
+        "genreCat": {
+            "MW": "Married Woman",
+            "Pervert": "Pervert",
+            "Btb": "Beautiful Breast",
+            "Romance": "Romance",
+            "Fantasy": "Fantasy",
+            "Adv": "Adventure"
+        },
+        "tags": "Tags",
+        "switches": {
+            "schedulePost": "Schedule a post",
+            "publicationPeriod": "Publication period",
+            "addPlan": "Add a plan",
+            "singlePostSales": "Single post sales"
+        },
+        "agreements": {
+            "copyright": "I have confirmed that the content of my post does not constitute copyright infringement or the publication of obscene materials.",
+            "minors": "I have confirmed that my post does not contain images of minors, and does not include expressions that suggest minors.",
+            "censored": "I have confirmed that all genitalia and penetration images have been censored appropriately.",
+            "contentrequire": "Content that requires blurring"
+        },
+        "publishButton": "Publish a post",
+        "publishing": "Publishing...",
+        "files": "Files",
+        "footerText": {
+            "thankYou": "Thank you for your cooperation to ensure that our platform is safe and secure.",
+            "lineone": "Please ensure that your published content complies with our ",
+            "lineonetwo": "Terms of Use.",
+            "linetwo": "Uploading the content of other people is an infringement of copyright and is punishable by up to 10 years in prison or a fine of up to 10 million yen.",
+            "linethree": "Please do not publish content that has not been censored with mosaic processing, as this constitutes the distribution of obscene materials and is a criminal offense.",
+            "linefour": "In the event that you fail to censor genitalia or penetration images, all your posts may be deleted.",
+            "buttonclick": "Click here for help with publishing a post",
+            "success": "Success!",
+            "linepost": "Your post has been published successfully and is now live for your followers to see.",
+            "continuehome": "Continue to Home",
+            "viewprofile": "View My Profile"
+        },
+        "placeholder": {
+            "explanationText": "Enter description",
+            "tagstext": "Enter tags"
+        }
+    },
+    "feed": {
+        "forYou": "For You",
+        "following": "Following",
+        "loading": "Loading feed...",
+        "noPostsAvailable": "No posts available",
+        "createFirstPost": "Create First Post"
+    },
+    "ageVerification": {
+        "warning": "The next page contains adult content.\nAccess by persons under the age of 18 is strictly prohibited.",
+        "question": "Are you 18 years old or older?",
+        "yes": "Yes",
+        "cancel": "Cancel",
+        "underageMessage": "Persons under the age of 18 are not allowed to use this service",
+        "close": "Close"
+    },
+    "emailVerification": {
+        "title": "Your email address has not been verified yet.",
+        "sentInfo": "We have sent an email with a confirmation link to the email address you entered. Please check for it.",
+        "cooperation": "We appreciate your cooperation in preventing fraudulent and malicious accounts.",
+        "notReceived": "If you do not receive the confirmation email, please check the email address you entered (see {link}) and resend the confirmation email.",
+        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the myfans domain.",
+        "fromAddress": "The verification email will be sent from <strong>noreply@myfans.jp</strong>.",
+        "moreInfo": "For information about other possible problems, {link}.",
+        "backToCreation": "Back to account creation",
+        "brand": "myfans"
+    },
+    "creatorPage": {
+        "followers": "Followers",
+        "follow": "Follow",
+        "following": "Following",
+        "seeMore": " ランキングをもっと見る",
+        "seeAll": "See more",
+        "recommend": "Recommendation",
+        "month": "month",
+        "posts": "Posts",
+        "subscribe": "Subscribe",
+        "viewmore": "View more",
+        "allcreatorhere": "All creators are here →"
+    },
+    "navigation": {
+        "home": "Home",
+        "feed": "Feed",
+        "ranking": "Ranking",
+        "messages": "Messages",
+        "account": "Account",
+        "create": "Create",
+        "dashboard": "Dashboard"
+    },
+    "featuredAdmin": {
+        "header": "Featured by admin",
+        "postSection": "Post",
+        "premiumBanner": {
+            "title": "Premium Access",
+            "description": "Unlock exclusive content and get access to all premium features",
+            "button": "Upgrade Now"
+        }
+    },
+    "postLibrary": {
+        "all": "All",
+        "title": "Post library",
+        "purchased": "Purchased",
+        "saved": "Saved",
+        "liked": "Liked",
+        "viewingHistory": "Viewing history",
+        "new": "New",
+        "viewingdate": "Viewing data",
+        "mostLiked": "Most liked",
+        "today": "Today"
+    },
+    "notifications": {
+        "paymentRedirect": "Regarding the payment system screen you will be redirected to when paying by credit card",
+        "termsUpdate": "Notice of Terms of Use Revision"
+    },
+    "genres": {
+        "title": "Recommended genres",
+        "amateur": "Amateur",
+        "personalFilming": "Personal Filming",
+        "marriedWoman": "Married Woman",
+        "largeBreasts": "Large Breasts",
+        "pervert": "Pervert",
+        "homeVideo": "Home Video",
+        "beautifulWoman": "Beautiful Woman",
+        "beautifulBreasts": "Beautiful Breasts",
+        "posts": "{{count}} posts",
+        "SeeMore": "See more genres"
+    },
+    "ranking": {
+        "title": "Ranking",
+        "filters": {
+            "all": "All",
+            "popular": "Popular",
+            "premium": "Premium",
+            "live": "Live"
+        },
+        "empty": {
+            "emoji": "💕",
+            "message": "No posts found in this category"
+        }
+    },
+    "creatorFollow": {
+        "title": "Creator",
+        "recruit": "RECRUIT",
+        "recruitMessage": "Recruiting Management/Development Members"
+    },
+    "rankingPage": {
+        "tabs": {
+            "post": "Post",
+            "creator": "Creator"
+        },
+        "time": {
+            "daily": "Daily",
+            "weekly": "Weekly",
+            "monthly": "Monthly",
+            "allTime": "All time"
+        }
+    },
+    "gender": {
+        "title": "Please select the posts you want to see",
+        "general": {
+            "label": "General Adult",
+            "description": "All content for adults"
+        },
+        "gay": {
+            "label": "Gay • BL",
+            "description": "LGBTQ+ content"
+        },
+        "show": "Show",
+        "cancel": "Cancel"
+    },
+    "homePage": {
+        "gender": "Gender",
+        "welcomeMessage": "Welcome to FANS HUB",
+        "introText": "Discover exclusive content from your favorite creators. Subscribe, follow, and enjoy a personalized experience.",
+        "getStarted": "Get Started",
+        "learnMore": "Learn More"
+    },
+    "postPage": {
+        "like": "Like",
+        "likes": "Likes",
+        "comments": "Comments",
+        "share": "Share",
+        "save": "Save",
+        "viewProfile": "View Profile",
+        "addComment": "Add a comment...",
+        "noComments": "No comments yet. Be the first to comment!",
+        "loadMoreComments": "Load more comments",
+        "commentPlaceholder": "Write a comment...",
+        "postComment": "Post Comment",
+        "viewmore": "View more",
+        "new": "New",
+        "allgenres": "All genres are here →",
+        "creatorcomingsoon": "Creator tab content will be implemented next"
+    },
+    "notices": {
+        "creditCard": "Regarding the payment system screen you will be redirected to when paying by credit card",
+        "termsUpdate": "Notice of Terms of Use Revision"
+    },
+    "GenreCategory": {
+        "listTitle": "List of genres",
+        "browseByCategory": "Browse by category",
+        "loadMore": "Load More Categories",
+        "appearance": {
+            "title": "Appearance",
+            "description": "Genres based on performer attributes such as large breasts or tall height"
+        },
+        "play": {
+            "title": "Play",
+            "description": "Genres based on content such as riding or fellatio"
+        },
+        "type": {
+            "title": "Type",
+            "description": "Genres based on concepts such as amateurs or housewives"
+        },
+        "situation": {
+            "title": "Situation",
+            "description": "Genres based on filming scenarios such as couples or spas"
+        },
+        "costume": {
+            "title": "Costume",
+            "description": "Genres based on costumes such as uniforms or swimwear"
+        }
+    },
+    "AccountPage": {
+        "paymenttitle": "Regarding the payment system screen you will be redirected to when paying by credit card",
+        "noticeterm": "Notice of Terms of Use Revision",
+        "settings": "Settings",
+        "help": "Help",
+        "languagesettings": "Language settings / Languages",
+        "aboutonlyu": "About myfans"
+    },
+    "emailVerify": {
+        "title": "Your email address has not been",
+        "afterBr": "verified yet.",
+        "sentInfo": "We have sent an email with a confirmation link to the email address you entered. Please check for it.",
+        "cooperation": "We appreciate your cooperation in preventing fraudulent and malicious accounts.",
+        "notReceived": "If you do not receive the confirmation email, please check the email address you entered (see {link}) and resend the confirmation email.",
+        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the myfans domain."
+    },
+    "notificationPage": {
+        "title": "Notification",
+        "tabs": {
+            "administration": "Administration office",
+            "notices": "Notices",
+            "purchases": "Purchases and Sales"
+        }
+    },
+    "register_creator": {
+        "progress": {
+            "step1": "Enter information",
+            "step2": "Phone number verification",
+            "step3": "Submit documents",
+            "step4": "Document review"
+        },
+        "title": "Please enter your personal information",
+        "subtitle": "This information must match the information on the identification documents you submit on the next page.",
+        "form": {
+            "name": "Name",
+            "furigana_family": "Furigana (Family Name)",
+            "furigana_first": "Furigana (First Name)",
+            "address": "Address",
+            "dob": "Date of birth"
+        },
+        "content_kind": {
+            "title": "What kind of content will you post?",
+            "general_adult": "General Adult",
+            "gay_bl": "Gay · BL"
+        },
+        "notice": "Information entered here cannot be changed later",
+        "next": "Next",
+        "back": "Back"
+    },
+    "AdminPage": {
+        "title": "Admin Panel",
+        "topTitle": "Admin Dashboard",
+        "status": "Status",
+        "action": "Actions",
+        "id": "ID",
+        "dashboardPage": {
+            "title": "Dashboard",
+            "stats": "Statistics & Rankings",
+            "views": "Views",
+            "followers": "Followers",
+            "ltv": "LTV"
+        },
+        "postsPage": {
+            "title": "Posts",
+            "postMng": "Post Management",
+            "stitle": "Title",
+            "toggle": "Toggle",
+            "switchBtn": "Switch"
+        },
+        "reportsPage": {
+            "title": "Reports",
+            "reportProc": "Report Processing",
+            "type": "Type",
+            "user": "User",
+            "resolveBtn": "Resolve"
+        },
+        "salesPage": {
+            "title": "Sales",
+            "salesRevenue": "Sales & Revenue",
+            "transId": "Transaction ID",
+            "user": "User",
+            "amount": "Amount"
+        },
+        "userPage": {
+            "title": "Users",
+            "userMng": "User Management",
+            "name": "Name",
+            "banBtn": "Ban"
+        },
+        "creatorPage": {
+            "title": "Creators",
+            "creatorMng": "Creator Management",
+            "name": "Name",
+            "banBtn": "Ban"
+        },
+        "verificationPage": {
+            "title": "Verification",
+            "identityVer": "Identity & Age Verification",
+            "user": "User",
+            "type": "Type",
+            "approveBtn": "Approve",
+            "rejectBtn": "Reject"
+        }
+    }
+}
