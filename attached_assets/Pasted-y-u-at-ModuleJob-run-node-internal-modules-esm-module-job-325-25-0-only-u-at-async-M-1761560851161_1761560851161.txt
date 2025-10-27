@@ -1,0 +1,141 @@
+y-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  | TypeError: fetch failed
+0|only-u  |     at node:internal/deps/undici/undici:13510:13
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u  |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u  |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u  |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u  |     errno: -111,
+0|only-u  |     code: 'ECONNREFUSED',
+0|only-u  |     syscall: 'connect',
+0|only-u  |     address: '127.0.0.1',
+0|only-u  |     port: 1106
+0|only-u  |   }
+0|only-u  | }
+^C
+root@srv1087935:/var/www/only-u# cd /var/www/only-u
+root@srv1087935:/var/www/only-u# cd /var/www/only-u
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# 
+root@srv1087935:/var/www/only-u# cd /var/www/only-u
+root@srv1087935:/var/www/only-u# ssh root@212.85.24.206
+The authenticity of host '212.85.24.206 (212.85.24.206)' can't be established.
+ED25519 key fingerprint is SHA256:4wszb0rq6W7AdzWWnBUbKmie2qybqww6kLz4/rpM89k.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '212.85.24.206' (ED25519) to the list of known hosts.
+root@212.85.24.206's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-85-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Oct 27 10:27:05 UTC 2025
+
+  System load:  0.03              Processes:             110
+  Usage of /:   4.2% of 95.82GB   Users logged in:       1
+  Memory usage: 7%                IPv4 address for eth0: 212.85.24.206
+  Swap usage:   0%                IPv6 address for eth0: 2a02:4780:59:cc86::1
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+*** System restart required ***
+Last login: Mon Oct 27 10:03:24 2025 from 45.13.135.26
+root@srv1087935:~# cd /var/www/only-u
+
+cat > .env.production << 'ENVEOF'
+NODE_ENV=production
+PORT=5000
+VITE_API_URL=https://only-u.fun
+SESSION_SECRET=RANDOM_SECRET_WILL_BE_REPLACED
+
+VITE_FIREBASE_API_KEY=AIzaSyCvUJiZlQMztRs61qTZD7UnY5AYQQ3N1TM
+VITE_FIREBASE_PROJECT_ID=onlyu1020-c6696
+VITE_FIREBASE_AUTH_DOMAIN=onlyu1020-c6696.firebaseapp.com
+VITE_FIREBASE_STORAGE_BUCKET=onlyu1020-c6696.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=627626524087
+VITE_FIREBASE_APP_ID=1:627626524087:web:3fb2db22334c6c4e79bc32
+
+VITE_STRIPE_PUBLIC_KEY=pk_live_51SJLZVQXzSGbl6lJ6uiGIHc5dIir5GbtrS0I9g4S3SokXhDuH3eXcK3F7KD4RjdWGtwtuBzcqMyT50pBV1GB1tOs00WNjwwGnW
+STRIPE_SECRET_KEY=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
+
+STORAGE_PROVIDER=firebase
+ENVEOF
+
+sed -i "s/RANDOM_SECRET_WILL_BE_REPLACED/$(openssl rand -base64 48)/" .env.production
+
+pm2 restart only-u
+
+pm2 logs only-u --lines 30
+sed: -e expression #1, char 81: unknown option to `s'
+Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [only-u](ids: [ 0 ])
+[PM2] [only-u](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 2    │ online    │ 0%       │ 18.5mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 30 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-out.log last 30 lines:
+/root/.pm2/logs/only-u-error.log last 30 lines:
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  | TypeError: fetch failed
+0|only-u  |     at node:internal/deps/undici/undici:13510:13
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u  |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u  |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u  |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u  |     errno: -111,
+0|only-u  |     code: 'ECONNREFUSED',
+0|only-u  |     syscall: 'connect',
+0|only-u  |     address: '127.0.0.1',
+0|only-u  |     port: 1106
+0|only-u  |   }
+0|only-u  | }
+
