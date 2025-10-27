@@ -1,0 +1,35 @@
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+
+12:00:47 PM [express] serving on port 5000
+Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:1156:24
+Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:659:26
+Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:1156:24
+Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:659:26
+Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:659:26
+Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+    at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+    at async file:///var/www/only-u/dist/index.js:659:26
+root@srv1087935:/var/www/only-u# 
