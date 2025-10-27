@@ -1,0 +1,31 @@
+|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | 1:00:15 PM [express] serving on port 5000
+# dist/index.jsでFirebase初期化関数が呼ばれているか確認
+grep -n "init_firebase" dist/index.js
+^C
+root@srv1087935:/var/www/only-u# # dist/index.jsでFirebase初期化関数が呼ばれているか確認
+grep -n "init_firebase" dist/index.js
+23:var init_firebase = __esm({
+62:    const { storage: storage2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+248:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+263:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+296:      const { firestore: firestore2, admin: admin2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+335:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+347:      const { firestore: firestore2, admin: admin2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+369:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+396:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+445:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+476:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+498:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+522:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+538:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+581:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+612:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+634:      const { firestore: firestore2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+689:      const { auth: auth2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+779:      const { firestore: firestore2, admin: admin2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+947:      const { auth: auth2, firestore: firestore2, admin: admin2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+1000:        const { storage: firebaseStorage } = await Promise.resolve().then(() => (init_firebas(), firebase_exports));
+1162:      const { storage: storage2 } = await Promise.resolve().then(() => (init_firebase(), firebase_exports));
+root@srv1087935:/var/www/only-u# 

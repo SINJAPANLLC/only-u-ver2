@@ -1,0 +1,45 @@
+1 error
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# cd /var/www/only-u
+
+# 行1305-1340付近を確認
+echo "=== 行1305-1340を確認 ==="
+sed -n '1305,1340p' server/routes.ts
+=== 行1305-1340を確認 ===
+  app.get("/api/proxy/:folder/:filename", async (req, res) => {
+    try {
+      const { folder, filename } = req.params;
+      
+      // Construct object path in the format getObjectEntityFile expects: /objects/filename
+      const objectPath = `/objects/${filename}`;
+      
+      console.log('Proxy request for:', folder, filename, 'Object path:', objectPath, 'Range:', req.headers.range);
+      
+      // Import ObjectStorageService and Replit client
+      const { ObjectStorageService } = await import("./objectStorage");
+      const objectStorageService = new ObjectStorageService();
+      
+      // Get the file from Object Storage (it will search in public/private dirs automatically)
+      const file = await objectStorageService.getObjectEntityFile(objectPath);
+      
+      // Get full file path for Replit SDK
+      const filePath = `/${file.bucket.name}/${file.name}`;
+      console.log('[Proxy] Downloading file via Replit SDK:', filePath);
+      
+      // Download file using Replit SDK (has proper permissions)
+      // Replit SDK returns { ok: true, value: [Buffer] }
+      
+      const [fileBuffer] = await file.download();
+      }
+      console.log('[Proxy] Downloaded successfully, size:', fileBuffer.length, 'bytes');
+      
+      // Determine content type from filename
+      const ext = filename.toLowerCase().split('.').pop();
+      let contentType = 'application/octet-stream';
+      if (ext === 'mp4') contentType = 'video/mp4';
+      else if (ext === 'mov') contentType = 'video/quicktime';
+      else if (ext === 'webm') contentType = 'video/webm';
+      else if (ext === 'jpg' || ext === 'jpeg') contentType = 'image/jpeg';
+      else if (ext === 'png') contentType = 'image/png';
+      else if (ext === 'gif') contentType = 'image/gif';
+root@srv1087935:/var/www/only-u# 

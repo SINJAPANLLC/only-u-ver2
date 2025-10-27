@@ -1,0 +1,104 @@
+✓ 2900 modules transformed.
+../dist/public/index.html                                                           1.99 kB │ gzip:   0.77 kB
+../dist/public/assets/S__23355436_1761458269036-DnkfgHoF.jpg                       36.69 kB
+../dist/public/assets/S__23355435_1761458437613-ZtUTYoEc.jpg                       51.25 kB
+../dist/public/assets/00465-2336099699_0_1760917144954-6NSR4Dbx.jpg                59.23 kB
+../dist/public/assets/00021-2650716505_0_1760917144954-CbSPvP-L.jpg                71.74 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.17.14_1760917144953-C-4BMTeW.png    352.54 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.23.36_1760917144953-C5nM0uTg.png    374.27 kB
+../dist/public/assets/00035-3167998813_1760917144953-djSIga3e.png                 581.24 kB
+../dist/public/assets/00220-1604543024_0_1760917144953-DgriXLtA.png               632.22 kB
+../dist/public/assets/1_1761457956151-sxUpn9Sz.png                              3,238.67 kB
+../dist/public/assets/3_1761457956151-BpStuj2a.png                              3,495.80 kB
+../dist/public/assets/2_1761457956151-D6P7x4Q3.png                              3,792.85 kB
+../dist/public/assets/index-Cjs4TzwM.css                                          181.51 kB │ gzip:  26.96 kB
+../dist/public/assets/index-IK1SN_SD.js                                         2,061.70 kB │ gzip: 494.32 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.66s
+
+  dist/index.js  54.5kb
+
+⚡ Done in 8ms
+[PM2] Applying action restartProcessId on app [only-u](ids: [ 0 ])
+[PM2] [only-u](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 4    │ online    │ 0%       │ 18.9mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 30 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-out.log last 30 lines:
+/root/.pm2/logs/only-u-error.log last 30 lines:
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:220:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+node --version
+npm --version
+^C
+root@srv1087935:/var/www/only-u# 
+root@srv1087935:/var/www/only-u# node --version
+npm --version
+v20.19.5
+10.8.2
+root@srv1087935:/var/www/only-u# mkdir -p /var/www/only-u
+cd /var/www/only-u
+root@srv1087935:/var/www/only-u# git clone https://github.com/SINJAPANLLC/only-u-ver2.git .
+fatal: destination path '.' already exists and is not an empty directory.
+root@srv1087935:/var/www/only-u# npm install
+
+up to date, audited 786 packages in 2s
+
+89 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (3 low, 5 moderate)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+root@srv1087935:/var/www/only-u# npm install -g pm2
+
+changed 133 packages in 8s
+
+13 packages are looking for funding
+  run `npm fund` for details

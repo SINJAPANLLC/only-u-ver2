@@ -1,0 +1,137 @@
+v1087935:/var/www/only-u# sudo systemctl reload nginx
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# # 設定をテスト
+sudo nginx -t
+# nginxを再起動
+sudo systemctl reload nginx
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# # リアルタイムでログを監視
+pm2 logs only-u --lines 0
+0|only-u  | [getObjectEntityFile] entityId: ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV
+0|only-u  | [getObjectEntityFile] entityId: 3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4
+0|only-u  | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u  |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u  | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u  |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u  | [getObjectEntityFile] entityId: ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV
+0|only-u  | [getObjectEntityFile] entityId: 3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4
+0|only-u  | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u  |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u  | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u  |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u  | [uploadFile] Uploading to Firebase Storage: public/5b5a9158-52b8-4806-b3f1-bcde1f3a3d07.MP4
+0|only-u  | [uploadFile] Failed to upload to Firebase Storage: GaxiosError: {
+0|only-u  |   "error": {
+0|only-u  |     "code": 404,
+0|only-u  |     "message": "The specified bucket does not exist.",
+0|only-u  |     "errors": [
+0|only-u  |       {
+0|only-u  |         "message": "The specified bucket does not exist.",
+0|only-u  |         "domain": "global",
+0|only-u  |         "reason": "notFound"
+0|only-u  |       }
+0|only-u  |     ]
+0|only-u  |   }
+0|only-u  | }
+0|only-u  |     at Gaxios._request (/var/www/only-u/node_modules/gaxios/build/src/gaxios.js:142:23)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async JWT.requestAsync (/var/www/only-u/node_modules/google-auth-library/build/src/auth/oauth2client.js:429:18)
+0|only-u  |     at async Upload.makeRequest (/var/www/only-u/node_modules/@google-cloud/storage/build/cjs/src/resumable-upload.js:769:21)
+0|only-u  |     at async uri.retries (/var/www/only-u/node_modules/@google-cloud/storage/build/cjs/src/resumable-upload.js:435:29)
+0|only-u  |     at async Upload.createURIAsync (/var/www/only-u/node_modules/@google-cloud/storage/build/cjs/src/resumable-upload.js:432:21) {
+0|only-u  |   config: {
+0|only-u  |     method: 'POST',
+0|only-u  |     url: 'https://storage.googleapis.com/upload/storage/v1/b/onlyu1020-c6696.firebasestorage.app/o?name=public%2F5b5a9158-52b8-4806-b3f1-bcde1f3a3d07.MP4&uploadType=resumable',
+0|only-u  |     params: {
+0|only-u  |       name: 'public/5b5a9158-52b8-4806-b3f1-bcde1f3a3d07.MP4',
+0|only-u  |       uploadType: 'resumable'
+0|only-u  |     },
+0|only-u  |     data: { metadata: [Object] },
+0|only-u  |     headers: {
+0|only-u  |       'User-Agent': 'gcloud-node-storage/7.17.2 google-api-nodejs-client/9.15.1',
+0|only-u  |       'x-goog-api-client': 'gl-node/20.19.5 gccl/7.17.2-CJS gccl-invocation-id/d440cdbc-492e-4738-ac11-6e0919d9e203',
+0|only-u  |       'X-Upload-Content-Type': 'video/mp4',
+0|only-u  |       Authorization: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+0|only-u  |       'Content-Type': 'application/json'
+0|only-u  |     },
+0|only-u  |     validateStatus: [Function (anonymous)],
+0|only-u  |     paramsSerializer: [Function: paramsSerializer],
+0|only-u  |     body: '{"metadata":{"uploadedBy":"VZg6w9CTnGZhWewtKVt3ryFW7962","visibility":"public"}}',
+0|only-u  |     responseType: 'unknown',
+0|only-u  |     errorRedactor: [Function: defaultErrorRedactor]
+0|only-u  |   },
+0|only-u  |   response: {
+0|only-u  |     config: {
+0|only-u  |       method: 'POST',
+0|only-u  |       url: 'https://storage.googleapis.com/upload/storage/v1/b/onlyu1020-c6696.firebasestorage.app/o?name=public%2F5b5a9158-52b8-4806-b3f1-bcde1f3a3d07.MP4&uploadType=resumable',
+0|only-u  |       params: [Object],
+0|only-u  |       data: [Object],
+0|only-u  |       headers: [Object],
+0|only-u  |       validateStatus: [Function (anonymous)],
+0|only-u  |       paramsSerializer: [Function: paramsSerializer],
+0|only-u  |       body: '{"metadata":{"uploadedBy":"VZg6w9CTnGZhWewtKVt3ryFW7962","visibility":"public"}}',
+0|only-u  |       responseType: 'unknown',
+0|only-u  |       errorRedactor: [Function: defaultErrorRedactor]
+0|only-u  |     },
+0|only-u  |     data: '{\n' +
+0|only-u  |       '  "error": {\n' +
+0|only-u  |       '    "code": 404,\n' +
+0|only-u  |       '    "message": "The specified bucket does not exist.",\n' +
+0|only-u  |       '    "errors": [\n' +
+0|only-u  |       '      {\n' +
+0|only-u  |       '        "message": "The specified bucket does not exist.",\n' +
+0|only-u  |       '        "domain": "global",\n' +
+0|only-u  |       '        "reason": "notFound"\n' +
+0|only-u  |       '      }\n' +
+0|only-u  |       '    ]\n' +
+0|only-u  |       '  }\n' +
+0|only-u  |       '}\n',
+0|only-u  |     headers: {
+0|only-u  |       'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+0|only-u  |       'cache-control': 'no-cache, no-store, max-age=0, must-revalidate',
+0|only-u  |       'content-length': '247',
+0|only-u  |       'content-type': 'text/html; charset=UTF-8',
+0|only-u  |       date: 'Mon, 27 Oct 2025 13:38:05 GMT',
+0|only-u  |       expires: 'Mon, 01 Jan 1990 00:00:00 GMT',
+0|only-u  |       pragma: 'no-cache',
+0|only-u  |       server: 'UploadServer',
+0|only-u  |       vary: 'Origin, X-Origin',
+0|only-u  |       'x-guploader-uploadid': 'AOCedOFFCKy5oHKmJJsSrehBwHFeJPslkWPyA3QDkOGq3q4G0lpy2zX4EB7JWSKqPFtx9rQDtTCIsFZp2wmI39lGfUSjIuJ_883Ba9NfXKGCww'
+0|only-u  |     },
+0|only-u  |     status: 404,
+0|only-u  |     statusText: 'Not Found',
+0|only-u  |     request: {
+0|only-u  |       responseURL: 'https://storage.googleapis.com/upload/storage/v1/b/onlyu1020-c6696.firebasestorage.app/o?name=public%2F5b5a9158-52b8-4806-b3f1-bcde1f3a3d07.MP4&uploadType=resumable'
+0|only-u  |     }
+0|only-u  |   },
+0|only-u  |   error: undefined,
+0|only-u  |   status: 404,
+0|only-u  |   [Symbol(gaxios-gaxios-error)]: '6.7.1'
+0|only-u  | }
+0|only-u  | Error uploading file: Error: Failed to upload file: {
+0|only-u  |   "error": {
+0|only-u  |     "code": 404,
+0|only-u  |     "message": "The specified bucket does not exist.",
+0|only-u  |     "errors": [
+0|only-u  |       {
+0|only-u  |         "message": "The specified bucket does not exist.",
+0|only-u  |         "domain": "global",
+0|only-u  |         "reason": "notFound"
+0|only-u  |       }
+0|only-u  |     ]
+0|only-u  |   }
+0|only-u  | }
+0|only-u  |     at ObjectStorageService.uploadFile (file:///var/www/only-u/dist/index.js:106:17)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:730:28
+0|only-u  | 1:38:05 PM [express] POST /api/objects/upload 500 in 674ms :: {"error":"Internal server error"}
