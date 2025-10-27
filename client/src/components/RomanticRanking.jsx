@@ -8,6 +8,8 @@ import { useUserStats } from '../context/UserStatsContext';
 import { collection, query, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
+import fallbackThumbnail from '@assets/S__23355436_1761458269036.jpg';
+
 const Ranking = () => {
     const navigate = useNavigate();
     const { likedPosts, savedPosts, toggleLike, toggleSave, isLiked, isSaved } = useUserInteractions();
@@ -526,7 +528,7 @@ const Ranking = () => {
                                             whileHover={{ scale: 1.15 }}
                                             onError={(e) => {
                                                 console.error('Image thumbnail error:', e.target.src);
-                                                e.target.src = '/genre-1.png';
+                                                e.target.src = fallbackThumbnail;
                                             }}
                                         />
                                     )
@@ -534,7 +536,7 @@ const Ranking = () => {
                                     // サムネイルがない場合
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200">
                                         <img 
-                                            src="/genre-1.png" 
+                                            src={fallbackThumbnail}
                                             alt={post.title}
                                             className="w-full h-full object-cover"
                                         />
