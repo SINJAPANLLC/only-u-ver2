@@ -1,0 +1,122 @@
+# 4. Nginx設定をテストして再起動
+sudo nginx -t && sudo systemctl reload nginx
+
+# 5. テストファイルを作成してアクセス確認
+echo "certbot-test" | sudo tee /var/www/html/.well-known/acme-challenge/test.txt
+                                 ^C
+root@srv1087935:/var/www/only-u# cd /var/www/only-u
+
+# 1. DNSレコードを確認
+echo "=== DNS確認 ==="
+echo "A record (IPv4):"
+dig +short A only-u.fun
+echo "AAAA record (IPv6):"
+dig +short AAAA only-u.fun
+echo "このVPSのIPアドレス:"
+hostname -I
+
+# 2. .well-known/acme-challengeディレクトリを作成
+sudo mkdir -p /var/www/html/.well-known/acme-challenge
+sudo chown -R www-data:www-data /var/www/html/.well-known
+sudo chmod -R 755 /var/www/html/.well-known
+
+# 3. nginx設定を修正（プロキシモードでもACMEチャレンジに対応）
+sudo tee /etc/nginx/sites-available/only-u.fun << 'EOF'
+server {
+    listen 80;
+    listen [::]:80;
+    server_name only-u.fun www.only-u.fun;
+
+    root /var/www/html;
+
+    # ACME challenge location - MUST come BEFORE location /
+    location ^~ /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/html;
+        default_type "text/plain";
+        try_files $uri =404;
+    }
+
+    # Proxy to Node.js app
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+EOF
+
+# 4. Nginx設定をテストして再起動
+sudo nginx -t && sudo systemctl reload nginx
+
+# 5. テストファイルを作成してアクセス確認
+echo "certbot-test" | sudo tee /var/www/html/.well-known/acme-challenge/test.txt
+echo "4. その後、再度certbotを実行" 待つ"無効化" にアクセス"
+=== DNS確認 ===
+A record (IPv4):
+91.108.119.37
+88.223.91.80
+AAAA record (IPv6):
+2a02:4780:3a:5596:9a95:5a3a:5ec1:322
+2a02:4780:3b:b68b:b263:72c2:a17:de7d
+このVPSのIPアドレス:
+212.85.24.206 2a02:4780:59:cc86::1 
+server {
+    listen 80;
+    listen [::]:80;
+    server_name only-u.fun www.only-u.fun;
+
+    root /var/www/html;
+
+    # ACME challenge location - MUST come BEFORE location /
+    location ^~ /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/html;
+        default_type "text/plain";
+        try_files $uri =404;
+    }
+
+    # Proxy to Node.js app
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+certbot-test
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title> 301 Moved Permanently
+</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">     <div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+        <h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">301</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Moved Permanently
+</h2>
+<p>The document has been permanently moved.</p>
+</div></div></body></html>
+
+✅ 準備完了
+
+📝 次のステップ:
+1. Hostingerのコントロールパネル → DNS設定 にアクセス
+2. AAAA (IPv6) レコードを削除または無効化
+3. DNS変更が反映されるまで数分待つ
+4. その後、再度certbotを実行
+root@srv1087935:/var/www/only-u# 
