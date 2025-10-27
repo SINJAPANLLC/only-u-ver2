@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { useAuth } from '../../../context/AuthContext';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
-import creatorImg1 from '@assets/スクリーンショット 2025-10-08 22.17.14_1760917144953.png';
 
 const Creator = ({ activeTimeFilter }) => {
     const navigate = useNavigate();
@@ -129,8 +128,8 @@ const Creator = ({ activeTimeFilter }) => {
                             fetchedCreators.push({
                                 id: doc.id,
                                 name: userData.displayName || userData.name || '名無しさん',
-                                avatar: userData.photoURL || userData.avatar || creatorImg1,
-                                backgroundImage: userData.photoURL || userData.avatar || creatorImg1,
+                                avatar: userData.photoURL || userData.avatar || '/api/placeholder/400/400',
+                                backgroundImage: userData.photoURL || userData.avatar || '/api/placeholder/800/400',
                                 followers: formatNumber(userData.followers || 0),
                                 likes: formatNumber(stats.likes),
                                 description: userData.bio || userData.description || '',
