@@ -3,9 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
-import slider1 from '@assets/1_1761457956151.png';
-import slider2 from '@assets/2_1761457956151.png';
-import slider3 from '@assets/3_1761457956151.png';
 
 const FeaturedCreators = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -34,9 +31,9 @@ const FeaturedCreators = () => {
                 // データがない場合はデフォルトの静的画像を使用
                 if (slidersData.length === 0) {
                     setSliderImages([
-                        { id: '1', imageUrl: slider1, title: '' },
-                        { id: '2', imageUrl: slider2, title: '' },
-                        { id: '3', imageUrl: slider3, title: '' }
+                        { id: '1', imageUrl: '/api/placeholder/1200/600', title: '' },
+                        { id: '2', imageUrl: '/api/placeholder/1200/600', title: '' },
+                        { id: '3', imageUrl: '/api/placeholder/1200/600', title: '' }
                     ]);
                 } else {
                     setSliderImages(slidersData);
@@ -48,9 +45,9 @@ const FeaturedCreators = () => {
                 console.error('Error loading sliders:', error);
                 // エラーの場合もデフォルト画像を使用
                 setSliderImages([
-                    { id: '1', imageUrl: slider1, title: '' },
-                    { id: '2', imageUrl: slider2, title: '' },
-                    { id: '3', imageUrl: slider3, title: '' }
+                    { id: '1', imageUrl: '/api/placeholder/1200/600', title: '' },
+                    { id: '2', imageUrl: '/api/placeholder/1200/600', title: '' },
+                    { id: '3', imageUrl: '/api/placeholder/1200/600', title: '' }
                 ]);
                 setLoading(false);
             }

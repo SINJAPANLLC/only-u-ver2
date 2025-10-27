@@ -4,8 +4,6 @@ import { ChevronRight, Star } from 'lucide-react';
 import { genreData, getGenreVideoCount, updateGenreVideoCount } from '../data/constants';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import squirtingImage from '@assets/S__23355436_1761458269036.jpg';
-import abnormalImage from '@assets/S__23355435_1761458437613.jpg';
 
 const RecommendedGenres = ({ likedItems, toggleLike }) => {
     const navigate = useNavigate();
@@ -20,8 +18,8 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
         '/genre-4.png',
         '/genre-5.png',
         '/genre-6.png',
-        squirtingImage,  // 潮吹き (beautifulWoman) の画像
-        abnormalImage,   // アブノーマル (beautifulBreasts) の画像
+        '/api/placeholder/400/300',  // 潮吹き (beautifulWoman) の画像
+        '/api/placeholder/400/300',   // アブノーマル (beautifulBreasts) の画像
     ];
 
     const handleGenreClick = (genreNameKey) => {
