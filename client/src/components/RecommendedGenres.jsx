@@ -5,6 +5,13 @@ import { genreData, getGenreVideoCount, updateGenreVideoCount } from '../data/co
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import genreImage1 from '@assets/00035-3167998813_1760917144953.png';
+import genreImage2 from '@assets/00220-1604543024_0_1760917144953.png';
+import genreImage3 from '@assets/スクリーンショット 2025-10-08 22.17.14_1760917144953.png';
+import genreImage4 from '@assets/スクリーンショット 2025-10-08 22.23.36_1760917144953.png';
+import genreImage5 from '@assets/00021-2650716505_0_1760917144954.jpg';
+import genreImage6 from '@assets/00465-2336099699_0_1760917144954.jpg';
+
 const RecommendedGenres = ({ likedItems, toggleLike }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -12,14 +19,14 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
 
     // ジャンルカード用の画像
     const genreImages = [
-        '/genre-1.png',
-        '/genre-2.png',
-        '/genre-3.png',
-        '/genre-4.png',
-        '/genre-5.png',
-        '/genre-6.png',
-        '/api/placeholder/400/300',  // 潮吹き (beautifulWoman) の画像
-        '/api/placeholder/400/300',   // アブノーマル (beautifulBreasts) の画像
+        genreImage1,
+        genreImage2,
+        genreImage3,
+        genreImage4,
+        genreImage5,
+        genreImage6,
+        genreImage1,
+        genreImage2
     ];
 
     const handleGenreClick = (genreNameKey) => {
