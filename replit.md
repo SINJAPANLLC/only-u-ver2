@@ -65,7 +65,14 @@ The platform utilizes a modern web architecture comprising a React frontend buil
 *   **Radix UI**: Unstyled, accessible UI component library.
 
 ## Hostinger Deployment Guide
-Comprehensive deployment documentation is available in `HOSTINGER_DEPLOY.md`. Key points:
+Comprehensive deployment documentation is available in `DEPLOYMENT_GUIDE.md`. Key points:
+
+**Firebase Storage Authentication (October 27, 2025):**
+- Firebase Admin SDK now uses service account key (`firebase-admin-key.json`)
+- Service account key required for both development and production
+- File excluded from Git via `.gitignore` for security
+- Must be manually transferred to VPS during deployment
+- Resolves 404 errors for thumbnail/video loading
 
 **Production Deployment Options:**
 1. **Hostinger VPS/Cloud Hosting** (Recommended for adult content)
@@ -73,6 +80,7 @@ Comprehensive deployment documentation is available in `HOSTINGER_DEPLOY.md`. Ke
    - Custom domain configuration
    - SSL certificates included
    - $4-15/month pricing
+   - Firebase Storage authentication configured
 
 **Storage Migration:**
 - Replit Object Storage → Cloudflare R2 (recommended, cost-effective)
