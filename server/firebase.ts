@@ -6,9 +6,11 @@ import admin from 'firebase-admin';
 if (!admin.apps.length) {
   admin.initializeApp({
     projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
   });
 }
 
 export { admin };
 export const firestore = admin.firestore();
 export const auth = admin.auth();
+export const storage = admin.storage();
