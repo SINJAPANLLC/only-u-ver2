@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { db } from '../../../firebase';
 import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
+import rankingImg1 from '@assets/スクリーンショット 2025-10-08 22.17.14_1760917144953.png';
+import rankingImg2 from '@assets/00035-3167998813_1760917144953.png';
+import rankingImg3 from '@assets/スクリーンショット 2025-10-08 22.23.36_1760917144953.png';
+import rankingImg4 from '@assets/00220-1604543024_0_1760917144953.png';
+import rankingImg5 from '@assets/00021-2650716505_0_1760917144954.jpg';
+import rankingImg6 from '@assets/00465-2336099699_0_1760917144954.jpg';
 
 const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) => {
     const [activeTab] = useState('Post');
@@ -245,7 +251,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 151,
                 purchaseAmount: 15000,
                 createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg1,
                 creator: "Creator Name",
                 timeAgo: "2 hours ago"
             },
@@ -257,7 +263,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 138,
                 purchaseAmount: 12000,
                 createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg2,
                 creator: "Creator Name",
                 timeAgo: "1 day ago"
             },
@@ -269,7 +275,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 133,
                 purchaseAmount: 8500,
                 createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg3,
                 creator: "Creator Name",
                 timeAgo: "5 hours ago"
             },
@@ -281,7 +287,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 89,
                 purchaseAmount: 6200,
                 createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg4,
                 creator: "Creator Name",
                 timeAgo: "2 days ago"
             },
@@ -293,7 +299,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 36,
                 purchaseAmount: 5800,
                 createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg5,
                 creator: "Creator Name",
                 timeAgo: "6 hours ago"
             },
@@ -305,7 +311,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 67,
                 purchaseAmount: 3200,
                 createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(), // 8 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg6,
                 creator: "Creator Name",
                 timeAgo: "8 days ago"
             }
@@ -319,7 +325,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 456,
                 purchaseAmount: 45000,
                 createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg1,
                 creator: "Top Creator",
                 timeAgo: "2 days ago"
             },
@@ -331,7 +337,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 234,
                 purchaseAmount: 32000,
                 createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg2,
                 creator: "Popular Creator",
                 timeAgo: "4 days ago"
             },
@@ -343,7 +349,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 123,
                 purchaseAmount: 28000,
                 createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg3,
                 creator: "Rising Creator",
                 timeAgo: "5 days ago"
             },
@@ -355,7 +361,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 89,
                 purchaseAmount: 18000,
                 createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg4,
                 creator: "New Creator",
                 timeAgo: "1 day ago"
             },
@@ -367,7 +373,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 78,
                 purchaseAmount: 15000,
                 createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg5,
                 creator: "Veteran Creator",
                 timeAgo: "1 week ago"
             },
@@ -379,7 +385,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 65,
                 purchaseAmount: 12000,
                 createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(), // 6 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg6,
                 creator: "Trending Creator",
                 timeAgo: "6 days ago"
             }
@@ -393,7 +399,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 1234,
                 purchaseAmount: 185000,
                 createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(), // 2 weeks ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg1,
                 creator: "Champion Creator",
                 timeAgo: "2 weeks ago"
             },
@@ -405,7 +411,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 789,
                 purchaseAmount: 125000,
                 createdAt: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(), // 3 weeks ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg2,
                 creator: "Elite Creator",
                 timeAgo: "3 weeks ago"
             },
@@ -417,7 +423,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 567,
                 purchaseAmount: 98000,
                 createdAt: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(), // 1 month ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg3,
                 creator: "Popular Creator",
                 timeAgo: "1 month ago"
             },
@@ -429,7 +435,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 456,
                 purchaseAmount: 76000,
                 createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(), // ~3 weeks ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg4,
                 creator: "Consistent Creator",
                 timeAgo: "3 weeks ago"
             },
@@ -441,7 +447,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 345,
                 purchaseAmount: 65000,
                 createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg5,
                 creator: "Rising Star",
                 timeAgo: "2 days ago"
             },
@@ -453,7 +459,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 298,
                 purchaseAmount: 52000,
                 createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(), // ~1 month ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg6,
                 creator: "Quality Creator",
                 timeAgo: "1 month ago"
             }
@@ -467,7 +473,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 8901,
                 purchaseAmount: 850000,
                 createdAt: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(), // 6 months ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg1,
                 creator: "Legend Creator",
                 timeAgo: "6 months ago"
             },
@@ -479,7 +485,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 6789,
                 purchaseAmount: 620000,
                 createdAt: new Date(Date.now() - 240 * 24 * 60 * 60 * 1000).toISOString(), // 8 months ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg2,
                 creator: "Master Creator",
                 timeAgo: "8 months ago"
             },
@@ -491,7 +497,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 5432,
                 purchaseAmount: 490000,
                 createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg3,
                 creator: "Legendary Creator",
                 timeAgo: "1 year ago"
             },
@@ -503,7 +509,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 4321,
                 purchaseAmount: 380000,
                 createdAt: new Date(Date.now() - 300 * 24 * 60 * 60 * 1000).toISOString(), // 10 months ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg4,
                 creator: "Classic Creator",
                 timeAgo: "10 months ago"
             },
@@ -515,7 +521,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 3210,
                 purchaseAmount: 290000,
                 createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg5,
                 creator: "Timeless Creator",
                 timeAgo: "1 year ago"
             },
@@ -527,7 +533,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
                 bookmarks: 2890,
                 purchaseAmount: 210000,
                 createdAt: new Date(Date.now() - 240 * 24 * 60 * 60 * 1000).toISOString(), // 8 months ago
-                thumbnail: '/api/placeholder/400/300',
+                thumbnail: rankingImg6,
                 creator: "Hall of Fame Creator",
                 timeAgo: "8 months ago"
             }
@@ -554,7 +560,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 48,
             bookmarks: 36,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "1 day ago"
         },
@@ -565,7 +571,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 5,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "10 hours ago"
         },
@@ -576,7 +582,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 1,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "1 day ago"
         },
@@ -587,7 +593,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 1,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "1 day ago"
         },
@@ -598,7 +604,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 1,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "1 day ago"
         },
@@ -609,7 +615,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 1,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "1 day ago"
         }
@@ -623,7 +629,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "15 hours ago"
         },
@@ -634,7 +640,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 4,
             bookmarks: 0,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "8 hours ago"
         },
@@ -645,7 +651,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -656,7 +662,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -667,7 +673,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -678,7 +684,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -689,7 +695,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         }
@@ -702,7 +708,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "15 hours ago"
         },
@@ -713,7 +719,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 4,
             bookmarks: 0,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "8 hours ago"
         },
@@ -724,7 +730,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -735,7 +741,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -746,7 +752,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -757,7 +763,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -768,7 +774,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         }
@@ -781,7 +787,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "15 hours ago"
         },
@@ -792,7 +798,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 4,
             bookmarks: 0,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "8 hours ago"
         },
@@ -803,7 +809,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -814,7 +820,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -825,7 +831,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -836,7 +842,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -847,7 +853,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         }
@@ -860,7 +866,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "15 hours ago"
         },
@@ -871,7 +877,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 4,
             bookmarks: 0,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "8 hours ago"
         },
@@ -882,7 +888,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -893,7 +899,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -904,7 +910,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -915,7 +921,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -926,7 +932,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         }
@@ -939,7 +945,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 2,
             bookmarks: 3,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "15 hours ago"
         },
@@ -950,7 +956,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 4,
             bookmarks: 0,
             isNew: true,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "8 hours ago"
         },
@@ -961,7 +967,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -972,7 +978,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -983,7 +989,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -994,7 +1000,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         },
@@ -1005,7 +1011,7 @@ const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) =
             likes: 585,
             bookmarks: 234,
             isNew: false,
-            thumbnail: '/api/placeholder/400/300',
+            thumbnail: rankingImg1,
             creator: "Creator Name",
             timeAgo: "3 months ago"
         }

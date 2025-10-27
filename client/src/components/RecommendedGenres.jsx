@@ -4,15 +4,8 @@ import { ChevronRight, Star } from 'lucide-react';
 import { genreData, getGenreVideoCount, updateGenreVideoCount } from '../data/constants';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-import genreImage1 from '@assets/00035-3167998813_1760917144953.png';
-import genreImage2 from '@assets/00220-1604543024_0_1760917144953.png';
-import genreImage3 from '@assets/スクリーンショット 2025-10-08 22.17.14_1760917144953.png';
-import genreImage4 from '@assets/スクリーンショット 2025-10-08 22.23.36_1760917144953.png';
-import genreImage5 from '@assets/00021-2650716505_0_1760917144954.jpg';
-import genreImage6 from '@assets/00465-2336099699_0_1760917144954.jpg';
-import genreImage7 from '@assets/IMG_8987_1761583881581.JPG';
-import genreImage8 from '@assets/IMG_8986_1761583898068.JPG';
+import squirtingImage from '@assets/S__23355436_1761458269036.jpg';
+import abnormalImage from '@assets/S__23355435_1761458437613.jpg';
 
 const RecommendedGenres = ({ likedItems, toggleLike }) => {
     const navigate = useNavigate();
@@ -21,14 +14,14 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
 
     // ジャンルカード用の画像
     const genreImages = [
-        genreImage1,  // 0: amateur
-        genreImage2,  // 1: personalFilming
-        genreImage3,  // 2: marriedWoman
-        genreImage4,  // 3: largeBreasts
-        genreImage5,  // 4: pervert
-        genreImage6,  // 5: homeVideo
-        genreImage7,  // 6: beautifulWoman (潮吹き)
-        genreImage8   // 7: beautifulBreasts (アブノーマル)
+        '/genre-1.png',
+        '/genre-2.png',
+        '/genre-3.png',
+        '/genre-4.png',
+        '/genre-5.png',
+        '/genre-6.png',
+        squirtingImage,  // 潮吹き (beautifulWoman) の画像
+        abnormalImage,   // アブノーマル (beautifulBreasts) の画像
     ];
 
     const handleGenreClick = (genreNameKey) => {
