@@ -1,0 +1,59 @@
+# 最新のエラーログを確認
+pm2 logs only-u --lines 50 --err
+^C
+root@srv1087935:/var/www/only-u# # 最新のエラーログを確認
+pm2 logs only-u --lines 50 --err
+[TAILING] Tailing last 50 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-error.log last 50 lines:
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:1164:24
+0|only-u   | Error proxying file: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:1164:24
+0|only-u   | Error proxying file: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:1164:24
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+0|only-u   | Error serving object: _ObjectNotFoundError: Object not found
+0|only-u   |     at ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:169:15)
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async file:///var/www/only-u/dist/index.js:667:26
+
+

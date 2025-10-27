@@ -1,0 +1,33 @@
+n 1ms
+0|only-u  | Proxy request for: public c86ffb98-ca5a-469e-af17-354a7c5e9fe7.MOV Object path: /objects/c86ffb98-ca5a-469e-af17-354a7c5e9fe7.MOV Range: bytes=0-
+0|only-u  | [getObjectEntityFile] entityId: c86ffb98-ca5a-469e-af17-354a7c5e9fe7.MOV
+0|only-u  | 11:49:15 AM [express] GET /api/proxy/public/c86ffb98-ca5a-469e-af17-354a7c5e9fe7.MOV 404 in 1ms :: {"…
+0|only-u  | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u  |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:1156:24
+0|only-u  | Proxy request for: public 3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4 Object path: /objects/3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4 Range: bytes=0-
+0|only-u  | [getObjectEntityFile] entityId: 3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4
+0|only-u  | 11:49:15 AM [express] GET /api/proxy/public/3399c1e2-6d59-4453-b9a9-2e7dcd97646d.MP4 404 in 1ms :: {"…
+0|only-u  | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u  |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:1156:24
+0|only-u  | Proxy request for: public 34b976ee-66b3-49dd-a29f-6d93c969b2db.MOV Object path: /objects/34b976ee-66b3-49dd-a29f-6d93c969b2db.MOV Range: bytes=0-
+0|only-u  | [getObjectEntityFile] entityId: 34b976ee-66b3-49dd-a29f-6d93c969b2db.MOV
+0|only-u  | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u  |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:1156:24
+0|only-u  | 11:49:15 AM [express] GET /api/proxy/public/34b976ee-66b3-49dd-a29f-6d93c969b2db.MOV 404 in 1ms :: {"…
+0|only-u  | Proxy request for: public ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV Object path: /objects/ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV Range: bytes=0-
+0|only-u  | [getObjectEntityFile] entityId: ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV
+0|only-u  | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u  |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u  |     at async ObjectStorageService.getObjectEntityFile (file:///var/www/only-u/dist/index.js:148:24)
+0|only-u  |     at async file:///var/www/only-u/dist/index.js:1156:24
+0|only-u  | 11:49:15 AM [express] GET /api/proxy/public/ec18842e-a51f-462e-94ac-f2ad51bf6a48.MOV 404 in 1ms :: {"…

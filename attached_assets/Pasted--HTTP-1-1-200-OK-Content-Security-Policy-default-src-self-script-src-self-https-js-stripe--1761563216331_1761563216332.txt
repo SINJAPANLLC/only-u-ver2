@@ -1,0 +1,59 @@
+< HTTP/1.1 200 OK
+< Content-Security-Policy: default-src 'self';script-src 'self' https://js.stripe.com https://apis.google.com;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;font-src 'self' https://fonts.gstatic.com;img-src 'self' data: https: blob:;connect-src 'self' https://api.stripe.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com wss:;frame-src 'self' https://js.stripe.com;base-uri 'self';form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests
+< Cross-Origin-Opener-Policy: same-origin
+< Cross-Origin-Resource-Policy: same-origin
+< Origin-Agent-Cluster: ?1
+< Referrer-Policy: no-referrer
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+< X-Content-Type-Options: nosniff
+< X-DNS-Prefetch-Control: off
+< X-Download-Options: noopen
+< X-Frame-Options: SAMEORIGIN
+< X-Permitted-Cross-Domain-Policies: none
+< X-XSS-Protection: 0
+< Accept-Ranges: bytes
+< Cache-Control: public, max-age=0
+< Last-Modified: Mon, 27 Oct 2025 11:00:30 GMT
+
+=== 外部からのアクセステスト（詳細） ===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host only-u.fun:80 was resolved.
+* IPv6: 2a02:4780:1b:592e:65d8:ecaa:1f88:5304, 2a02:4780:3b:4f72:6ec2:86d0:9ec4:4838
+* IPv4: 153.92.12.197, 91.108.119.233
+*   Trying [2a02:4780:1b:592e:65d8:ecaa:1f88:5304]:80...
+* Connected to only-u.fun (2a02:4780:1b:592e:65d8:ecaa:1f88:5304) port 80
+> GET / HTTP/1.1
+> Host: only-u.fun
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 301 Moved Permanently
+< Date: Mon, 27 Oct 2025 11:06:32 GMT
+< Content-Type: text/html
+< Content-Length: 795
+< Connection: keep-alive
+< Location: https://only-u.fun/
+< platform: hostinger
+< panel: hpanel
+< Content-Security-Policy: upgrade-insecure-requests
+< Age: 193
+< Server: hcdn
+< alt-svc: h3=":443"; ma=86400
+< x-hcdn-request-id: e2c4f20b8c6e373cfe5fed2249bb1618-dci-edge4
+< x-hcdn-cache-status: HIT
+< 
+{ [795 bytes data]
+100   795  100   795    0     0   249k      0 --:--:-- --:--:-- --:--:--  388k
+* Connection #0 to host only-u.fun left intact
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title> 301 Moved Permanently
+</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">     <div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+        <h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">301</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Moved Permanently
+root@srv1087935:/var/www/only-u# 
