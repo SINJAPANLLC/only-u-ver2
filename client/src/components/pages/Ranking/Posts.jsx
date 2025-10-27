@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { db } from '../../../firebase';
 import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
+import rankingImg1 from '@assets/スクリーンショット 2025-10-08 22.17.14_1760917144953.png';
+import rankingImg2 from '@assets/00035-3167998813_1760917144953.png';
+import rankingImg3 from '@assets/スクリーンショット 2025-10-08 22.23.36_1760917144953.png';
+import rankingImg4 from '@assets/00220-1604543024_0_1760917144953.png';
+import rankingImg5 from '@assets/00021-2650716505_0_1760917144954.jpg';
+import rankingImg6 from '@assets/00465-2336099699_0_1760917144954.jpg';
 
 const RankingPosts = ({ activeTimeFilter = 'Daily', activeTagFilter = 'all' }) => {
     const [activeTab] = useState('Post');
