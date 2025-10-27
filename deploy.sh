@@ -8,8 +8,8 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # VPS接続情報（必要に応じて変更）
-VPS_USER="your_username"
-VPS_HOST="only-u.fun"
+VPS_USER="root"
+VPS_HOST="srv1087935"
 VPS_PATH="/var/www/only-u"
 
 echo -e "${GREEN}🚀 Only-U 本番デプロイ開始...${NC}"
