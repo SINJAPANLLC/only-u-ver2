@@ -219,11 +219,11 @@ const RevenueManagement = () => {
     const purchaseRevenue = platformFee + tax;
     
     // 振込時の手数料を計算（クリエイター売上から）
-    const systemFee = Math.floor(creatorPayments * 0.15); // 15% システム利用料
-    const systemFeeTax = Math.floor(systemFee * 0.10); // システム利用料の消費税10%
+    // システム利用料 = 15% + 消費税10% = 16.5%
+    const systemFee = Math.floor(creatorPayments * 0.165); // 16.5% システム利用料（税込）
     const transferFee = creatorPayments > 0 ? 330 : 0; // 振込手数料（売上がある場合のみ）
-    const transferRevenue = systemFee + systemFeeTax + transferFee; // 振込時収益
-    const actualTransferAmount = creatorPayments - systemFee - systemFeeTax - transferFee; // 実振込額
+    const transferRevenue = systemFee + transferFee; // 振込時収益
+    const actualTransferAmount = creatorPayments - systemFee - transferFee; // 実振込額
     
     const pendingAmount = transactions
       .filter(t => t.status === 'pending')
@@ -241,7 +241,6 @@ const RevenueManagement = () => {
         purchaseRevenue,
         creatorPayments,
         transferSystemFee: systemFee,
-        transferSystemFeeTax: systemFeeTax,
         transferBankFee: transferFee,
         transferRevenue: transferRevenue,
         actualTransferAmount: actualTransferAmount,
