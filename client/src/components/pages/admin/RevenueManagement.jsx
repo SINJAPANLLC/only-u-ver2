@@ -192,13 +192,13 @@ const RevenueManagement = () => {
   useEffect(() => {
     const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
     // プラットフォーム手数料の合計
-    const platformFee = transactions.reduce((sum, t) => sum + (t.fees?.platformFee || 0), 0);
+    const platformFee = transactions.reduce((sum, t) => sum + (t.platformFee || 0), 0);
     // 税金の合計
-    const tax = transactions.reduce((sum, t) => sum + (t.fees?.tax || 0), 0);
+    const tax = transactions.reduce((sum, t) => sum + (t.tax || 0), 0);
     // 購入時収益 = 購入手数料 + 税金
     const purchaseRevenue = platformFee + tax;
     // クリエイター売上 = クリエイターが受け取る金額の合計（振込前）
-    const creatorPayments = transactions.reduce((sum, t) => sum + (t.netAmount || 0), 0);
+    const creatorPayments = transactions.reduce((sum, t) => sum + (t.creatorAmount || 0), 0);
     const pendingAmount = transactions
       .filter(t => t.status === 'pending')
       .reduce((sum, t) => sum + t.amount, 0);
