@@ -191,14 +191,32 @@ const RevenueManagement = () => {
   // 統計を更新
   useEffect(() => {
     const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
-    // プラットフォーム手数料の合計
-    const platformFee = transactions.reduce((sum, t) => sum + (t.platformFee || 0), 0);
-    // 税金の合計
-    const tax = transactions.reduce((sum, t) => sum + (t.tax || 0), 0);
+    
+    // 各トランザクションから手数料と税金を計算または取得
+    let platformFee = 0;
+    let tax = 0;
+    let creatorPayments = 0;
+    
+    transactions.forEach(t => {
+      if (t.platformFee !== undefined && t.tax !== undefined && t.creatorAmount !== undefined) {
+        // 既にフィールドがある場合はそのまま使用
+        platformFee += t.platformFee;
+        tax += t.tax;
+        creatorPayments += t.creatorAmount;
+      } else {
+        // フィールドがない場合は総額から逆算
+        const basePrice = Math.floor(t.amount / 1.2); // クリエイター受取額
+        const calculatedPlatformFee = Math.floor(basePrice * 0.10); // 10%
+        const calculatedTax = Math.floor(basePrice * 0.10); // 10%
+        
+        platformFee += calculatedPlatformFee;
+        tax += calculatedTax;
+        creatorPayments += basePrice;
+      }
+    });
+    
     // 購入時収益 = 購入手数料 + 税金
     const purchaseRevenue = platformFee + tax;
-    // クリエイター売上 = クリエイターが受け取る金額の合計（振込前）
-    const creatorPayments = transactions.reduce((sum, t) => sum + (t.creatorAmount || 0), 0);
     const pendingAmount = transactions
       .filter(t => t.status === 'pending')
       .reduce((sum, t) => sum + t.amount, 0);
