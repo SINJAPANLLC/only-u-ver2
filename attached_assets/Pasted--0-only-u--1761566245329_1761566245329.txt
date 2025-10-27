@@ -1,0 +1,23 @@
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 3    │ online    │ 0%       │ 18.5mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+0|only-u   | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error proxying file: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
+0|only-u   | Error serving object: TypeError: Cannot read properties of undefined (reading 'bucket')
+0|only-u   |     at getFirebaseStorageBucket (file:///var/www/only-u/dist/index.js:55:38)
