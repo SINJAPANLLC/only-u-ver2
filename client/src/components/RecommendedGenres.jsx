@@ -11,6 +11,8 @@ import genreImage3 from '@assets/スクリーンショット 2025-10-08 22.17.14
 import genreImage4 from '@assets/スクリーンショット 2025-10-08 22.23.36_1760917144953.png';
 import genreImage5 from '@assets/00021-2650716505_0_1760917144954.jpg';
 import genreImage6 from '@assets/00465-2336099699_0_1760917144954.jpg';
+import genreImage7 from '@assets/IMG_8987_1761583881581.JPG';
+import genreImage8 from '@assets/IMG_8986_1761583898068.JPG';
 
 const RecommendedGenres = ({ likedItems, toggleLike }) => {
     const navigate = useNavigate();
@@ -19,14 +21,14 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
 
     // ジャンルカード用の画像
     const genreImages = [
-        genreImage1,
-        genreImage2,
-        genreImage3,
-        genreImage4,
-        genreImage5,
-        genreImage6,
-        genreImage1,
-        genreImage2
+        genreImage1,  // 0: amateur
+        genreImage2,  // 1: personalFilming
+        genreImage3,  // 2: marriedWoman
+        genreImage4,  // 3: largeBreasts
+        genreImage5,  // 4: pervert
+        genreImage6,  // 5: homeVideo
+        genreImage7,  // 6: beautifulWoman (潮吹き)
+        genreImage8   // 7: beautifulBreasts (アブノーマル)
     ];
 
     const handleGenreClick = (genreNameKey) => {
