@@ -217,13 +217,21 @@ const RevenueManagement = () => {
     
     // 購入時収益 = 購入手数料 + 税金
     const purchaseRevenue = platformFee + tax;
+    
+    // 振込時の手数料を計算（クリエイター売上から）
+    const systemFee = Math.floor(creatorPayments * 0.15); // 15% システム利用料
+    const systemFeeTax = Math.floor(systemFee * 0.10); // システム利用料の消費税10%
+    const transferFee = creatorPayments > 0 ? 330 : 0; // 振込手数料（売上がある場合のみ）
+    const transferRevenue = systemFee + systemFeeTax + transferFee; // 振込時収益
+    const actualTransferAmount = creatorPayments - systemFee - systemFeeTax - transferFee; // 実振込額
+    
     const pendingAmount = transactions
       .filter(t => t.status === 'pending')
       .reduce((sum, t) => sum + t.amount, 0);
 
     setStats(prev => {
-      // 総プラットフォーム利益 = 購入時収益 + システム利用料 + 振込手数料
-      const totalPlatformProfit = purchaseRevenue + prev.transferSystemFee + prev.transferBankFee;
+      // 総プラットフォーム利益 = 購入時収益 + 振込時収益
+      const totalPlatformProfit = purchaseRevenue + transferRevenue;
       
       return {
         ...prev,
@@ -232,6 +240,11 @@ const RevenueManagement = () => {
         tax,
         purchaseRevenue,
         creatorPayments,
+        transferSystemFee: systemFee,
+        transferSystemFeeTax: systemFeeTax,
+        transferBankFee: transferFee,
+        transferRevenue: transferRevenue,
+        actualTransferAmount: actualTransferAmount,
         totalPlatformProfit,
         pendingAmount,
         transactionCount: transactions.length
@@ -371,13 +384,13 @@ const RevenueManagement = () => {
         />
         <AdminStatsCard
           title="振込時収益"
-          value={`¥${(stats.transferSystemFee + stats.transferBankFee).toLocaleString()}`}
+          value={`¥${stats.transferRevenue.toLocaleString()}`}
           icon={TrendingUp}
           color="green"
         />
         <AdminStatsCard
           title="実振込額"
-          value={`¥${stats.actualCreatorPayouts.toLocaleString()}`}
+          value={`¥${stats.actualTransferAmount.toLocaleString()}`}
           icon={CheckCircle}
           color="green"
         />
