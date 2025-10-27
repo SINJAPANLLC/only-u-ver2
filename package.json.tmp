@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "migrate:storage": "tsx scripts/migrate-storage.ts"
+  }
+}
