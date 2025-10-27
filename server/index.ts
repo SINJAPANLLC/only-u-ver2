@@ -4,7 +4,10 @@ import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import './firebase';
+import { admin } from './firebase';
+
+// Force Firebase initialization at startup
+admin.apps;
 
 const app = express();
 
