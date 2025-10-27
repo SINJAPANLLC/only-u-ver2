@@ -1201,22 +1201,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      // Extract user payment amount (total price including fees)
-      // 表示価格はユーザーが支払う総額（手数料・税込み）
-      const priceMatch = planPrice.match(/\d+/);
-      if (!priceMatch) {
+      // Extract base price (creator's net amount)
+      // planPriceはクリエイター受取額（手数料・税抜き）
+      // カンマを除去してから数値化（例：「¥1,200」→「1200」）
+      const cleanPrice = planPrice.replace(/[^\d]/g, '');
+      if (!cleanPrice) {
         return res.status(400).json({ error: 'Invalid price format' });
       }
-      const totalAmount = parseInt(priceMatch[0]); // ユーザー支払い総額（例：60円）
+      const basePrice = parseInt(cleanPrice); // クリエイター受取額（例：50円）
       
-      // Calculate base price and fees by reverse calculation
+      // Calculate total amount and fees
       // totalAmount = basePrice + platformFee + tax
-      // totalAmount = basePrice * 1.2 (since both are 10% each)
-      // basePrice = totalAmount / 1.2
-      const basePrice = Math.floor(totalAmount / 1.2); // ベースプラン料金（例：50円）
+      // totalAmount = basePrice + (basePrice * 0.1) + (basePrice * 0.1)
+      // totalAmount = basePrice * 1.2
       const platformFee = Math.floor(basePrice * 0.10); // 10% プラットフォーム手数料（例：5円）
-      const tax = totalAmount - basePrice - platformFee; // 残りを税金として計上（端数調整）（例：5円）
-      const amount = totalAmount; // ユーザーが支払う総額（例：60円）
+      const tax = Math.floor(basePrice * 0.10); // 10% 消費税（例：5円）
+      const totalAmount = basePrice + platformFee + tax; // ユーザー支払い総額（例：60円）
+      const amount = totalAmount; // Stripeに請求する金額（例：60円）
 
       if (!stripe) {
         return res.status(500).json({ error: "Payment system not configured" });

@@ -190,22 +190,21 @@ const ProfilePage = () => {
                 // Process payment success with the plan info
                 try {
                     // プランの価格を解析（カンマを除去してから数値化）
-                    // 表示価格はユーザーが支払う総額（手数料・税込み）
+                    // plan.priceはクリエイター受取額（basePrice）
                     const priceMatch = plan.price.match(/[\d,]+/);
                     if (!priceMatch) {
                         console.error('価格の解析に失敗しました');
                         return;
                     }
-                    const totalAmount = parseInt(priceMatch[0].replace(/,/g, '')); // ユーザー支払い総額（例：60円）
+                    const basePrice = parseInt(priceMatch[0].replace(/,/g, '')); // クリエイター受取額（例：50円）
                     
-                    // 手数料計算：総額から逆算してベース料金を求める
+                    // ユーザー支払い総額を計算
                     // totalAmount = basePrice + platformFee + tax
                     // totalAmount = basePrice + (basePrice * 0.1) + (basePrice * 0.1)
                     // totalAmount = basePrice * 1.2
-                    // basePrice = totalAmount / 1.2
-                    const basePrice = Math.floor(totalAmount / 1.2); // ベースプラン料金（例：50円）
                     const platformFee = Math.floor(basePrice * 0.10); // 10% プラットフォーム手数料（例：5円）
-                    const tax = totalAmount - basePrice - platformFee; // 残りを税金として計上（端数調整）（例：5円）
+                    const tax = Math.floor(basePrice * 0.10); // 10% 消費税（例：5円）
+                    const totalAmount = basePrice + platformFee + tax; // ユーザー支払い総額（例：60円）
                     const creatorAmount = basePrice; // クリエイターが受け取る金額（例：50円）
 
                     // 1. 購入履歴を保存
@@ -684,18 +683,18 @@ const ProfilePage = () => {
             if (!plan) return;
 
             // プランの価格を解析（カンマを除去してから数値化）
-            // 表示価格はユーザーが支払う総額（手数料・税込み）
+            // plan.priceはクリエイター受取額（basePrice）
             const priceMatch = plan.price.match(/[\d,]+/);
             if (!priceMatch) return;
-            const totalAmount = parseInt(priceMatch[0].replace(/,/g, '')); // ユーザー支払い総額（例：60円）
+            const basePrice = parseInt(priceMatch[0].replace(/,/g, '')); // クリエイター受取額（例：50円）
             
-            // 手数料計算：総額から逆算してベース料金を求める
+            // ユーザー支払い総額を計算
             // totalAmount = basePrice + platformFee + tax
+            // totalAmount = basePrice + (basePrice * 0.1) + (basePrice * 0.1)
             // totalAmount = basePrice * 1.2
-            // basePrice = totalAmount / 1.2
-            const basePrice = Math.floor(totalAmount / 1.2); // ベースプラン料金（例：50円）
             const platformFee = Math.floor(basePrice * 0.10); // 10% プラットフォーム手数料（例：5円）
-            const tax = totalAmount - basePrice - platformFee; // 残りを税金として計上（端数調整）（例：5円）
+            const tax = Math.floor(basePrice * 0.10); // 10% 消費税（例：5円）
+            const totalAmount = basePrice + platformFee + tax; // ユーザー支払い総額（例：60円）
             const creatorAmount = basePrice; // クリエイターが受け取る金額（例：50円）
 
             // 1. 購入履歴を保存
