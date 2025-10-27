@@ -1,0 +1,1069 @@
+Last login: Mon Oct 27 18:51:00 on ttys092
+kazuyaotani@kazuya-MacBook-Air-2 ~ % >....                                      
+  }
+
+  async getPublicObjectSearchPaths(): Promise<Array<string>> {
+    return ['public'];
+  }
+
+  async getPrivateObjectDir(): Promise<string> {
+    return 'private';
+  }
+}
+
+export const replitClient = null;
+export const objectStorageClient = null;
+EOF
+
+# 再ビルド
+npm run build
+
+# PM2で再起動
+pm2 restart only-u --update-env
+
+# ログを確認
+pm2 logs only-u --lines 50
+cd: no such file or directory: /var/www/only-u
+zsh: command not found: #
+zsh: no such file or directory: server/firebase.ts
+zsh: command not found: #
+zsh: no such file or directory: server/objectStorage.ts
+zsh: command not found: #
+npm error code ENOENT
+npm error syscall open
+npm error path /Users/kazuyaotani/package.json
+npm error errno -2
+npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/Users/kazuyaotani/package.json'
+npm error enoent This is related to npm not being able to find a file.
+npm error enoent
+npm error A complete log of this run can be found in: /Users/kazuyaotani/.npm/_logs/2025-10-27T10_37_56_313Z-debug-0.log
+zsh: command not found: #
+zsh: command not found: pm2
+zsh: command not found: #
+zsh: command not found: pm2
+kazuyaotani@kazuya-MacBook-Air-2 ~ % 
+kazuyaotani@kazuya-MacBook-Air-2 ~ % ssh root@212.85.24.206
+The authenticity of host '212.85.24.206 (212.85.24.206)' can't be established.
+ED25519 key fingerprint is SHA256:4wszb0rq6W7AdzWWnBUbKmie2qybqww6kLz4/rpM89k.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '212.85.24.206' (ED25519) to the list of known hosts.
+root@212.85.24.206's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-85-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Oct 27 10:38:33 UTC 2025
+
+  System load:  0.05              Processes:             109
+  Usage of /:   4.2% of 95.82GB   Users logged in:       0
+  Memory usage: 7%                IPv4 address for eth0: 212.85.24.206
+  Swap usage:   0%                IPv6 address for eth0: 2a02:4780:59:cc86::1
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+*** System restart required ***
+Last login: Mon Oct 27 10:27:05 2025 from 212.85.24.206
+root@srv1087935:~# cd /var/www/only-u
+
+cat > server/firebase.ts << 'EOF'
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+EOF
+
+cat > server/objectStorage.ts << 'EOF'
+import { Storage as FirebaseStorage } from "firebase-admin/storage";
+import { Response } from "express";
+import { randomUUID } from "crypto";
+
+export class ObjectNotFoundError extends Error {
+        console.error('[normalizeObjectEntityPath] Failech[1]);\/(.+)$/);'; = 36
+> 
+> ssh root@212.85.24.206
+> ^C
+root@srv1087935:/var/www/only-u# ssh root@212.85.24.206
+root@212.85.24.206's password: 
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-85-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Oct 27 10:38:33 UTC 2025
+
+  System load:  0.05              Processes:             109
+  Usage of /:   4.2% of 95.82GB   Users logged in:       0
+  Memory usage: 7%                IPv4 address for eth0: 212.85.24.206
+  Swap usage:   0%                IPv6 address for eth0: 2a02:4780:59:cc86::1
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+*** System restart required ***
+Last login: Mon Oct 27 10:38:33 2025 from 116.81.22.135
+root@srv1087935:~# cd /var/www/only-u
+npm run build
+pm2 restart only-u --update-env
+pm2 logs only-u --lines 50
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.20 building for production...
+transforming (14) src/components/pages/RankingPage.jsxBrowserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2900 modules transformed.
+../dist/public/index.html                                                           1.99 kB │ gzip:   0.77 kB
+../dist/public/assets/S__23355436_1761458269036-DnkfgHoF.jpg                       36.69 kB
+../dist/public/assets/S__23355435_1761458437613-ZtUTYoEc.jpg                       51.25 kB
+../dist/public/assets/00465-2336099699_0_1760917144954-6NSR4Dbx.jpg                59.23 kB
+../dist/public/assets/00021-2650716505_0_1760917144954-CbSPvP-L.jpg                71.74 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.17.14_1760917144953-C-4BMTeW.png    352.54 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.23.36_1760917144953-C5nM0uTg.png    374.27 kB
+../dist/public/assets/00035-3167998813_1760917144953-djSIga3e.png                 581.24 kB
+../dist/public/assets/00220-1604543024_0_1760917144953-DgriXLtA.png               632.22 kB
+../dist/public/assets/1_1761457956151-sxUpn9Sz.png                              3,238.67 kB
+../dist/public/assets/3_1761457956151-BpStuj2a.png                              3,495.80 kB
+../dist/public/assets/2_1761457956151-D6P7x4Q3.png                              3,792.85 kB
+../dist/public/assets/index-Cjs4TzwM.css                                          181.51 kB │ gzip:  26.96 kB
+../dist/public/assets/index-IK1SN_SD.js                                         2,061.70 kB │ gzip: 494.32 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.01s
+
+  dist/index.js  54.4kb
+
+⚡ Done in 9ms
+[PM2] Applying action restartProcessId on app [only-u](ids: [ 0 ])
+[PM2] [only-u](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 6    │ online    │ 0%       │ 19.1mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 50 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-out.log last 50 lines:
+/root/.pm2/logs/only-u-error.log last 50 lines:
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:220:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+cat server/firebase.ts
+^C
+root@srv1087935:/var/www/only-u# cat server/firebase.ts
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# # 現在のファイルを確認
+cat server/firebase.ts
+
+# もしまだ古い内容なら、以下で上書き
+cat > server/firebase.ts << 'EOF'
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+EOF
+
+# objectStorage.tsの先頭部分を確認
+head -n 30 server/objectStorage.ts
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+// Object Storage Service for managing large video and image uploads
+// Modified for VPS deployment - uses Firebase Storage instead of Replit Object Storage
+import { Storage as FirebaseStorage } from "firebase-admin/storage";
+import { Response } from "express";
+import { randomUUID } from "crypto";
+
+export class ObjectNotFoundError extends Error {
+  constructor() {
+    super("Object not found");
+    this.name = "ObjectNotFoundError";
+    Object.setPrototypeOf(this, ObjectNotFoundError.prototype);
+  }
+}
+
+let firebaseStorageBucket: ReturnType<FirebaseStorage["bucket"]> | null = null;
+
+async function getFirebaseStorageBucket() {
+  if (!firebaseStorageBucket) {
+    const { storage } = await import('./firebase');
+    firebaseStorageBucket = storage.bucket();
+  }
+  return firebaseStorageBucket;
+}
+
+export class ObjectStorageService {
+  constructor() {}
+
+  async uploadFile(
+    fileBuffer: Buffer,
+    fileName: string,
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# c^C
+root@srv1087935:/var/www/only-u# ^C
+root@srv1087935:/var/www/only-u# 
+root@srv1087935:/var/www/only-u# # 現在のファイルを確認
+cat server/firebase.ts
+
+# もしまだ古い内容なら、以下で上書き
+cat > server/firebase.ts << 'EOF'
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+EOF
+
+# objectStorage.tsの先頭部分を確認
+head -n 30 server/objectStorage.ts
+import admin from 'firebase-admin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    projectId: 'onlyu1020-c6696',
+    storageBucket: 'onlyu1020-c6696.firebasestorage.app',
+  });
+}
+
+export { admin };
+export const firestore = admin.firestore();
+export const auth = admin.auth();
+export const storage = admin.storage();
+// Object Storage Service for managing large video and image uploads
+// Modified for VPS deployment - uses Firebase Storage instead of Replit Object Storage
+import { Storage as FirebaseStorage } from "firebase-admin/storage";
+import { Response } from "express";
+import { randomUUID } from "crypto";
+
+export class ObjectNotFoundError extends Error {
+  constructor() {
+    super("Object not found");
+    this.name = "ObjectNotFoundError";
+    Object.setPrototypeOf(this, ObjectNotFoundError.prototype);
+  }
+}
+
+let firebaseStorageBucket: ReturnType<FirebaseStorage["bucket"]> | null = null;
+
+async function getFirebaseStorageBucket() {
+  if (!firebaseStorageBucket) {
+    const { storage } = await import('./firebase');
+    firebaseStorageBucket = storage.bucket();
+  }
+  return firebaseStorageBucket;
+}
+
+export class ObjectStorageService {
+  constructor() {}
+
+  async uploadFile(
+    fileBuffer: Buffer,
+    fileName: string,
+root@srv1087935:/var/www/only-u# 
+root@srv1087935:/var/www/only-u# # 1. 環境変数ファイルを確認
+cat .env.production
+
+# 2. distフォルダを削除して完全再ビルド
+rm -rf dist
+npm run build
+
+# 3. PM2を完全に停止してから起動
+pm2 delete only-u
+pm2 start npm --name "only-u" -- start
+
+# 4. ログを確認
+pm2 logs only-u --lines 50
+NODE_ENV=production
+PORT=5000
+VITE_API_URL=https://only-u.fun
+SESSION_SECRET=vK8mN3xP9qR2wE5tY7uI0oP3aS6dF8gH1jK4lZ7xC9vB2nM5qW8eR1tY4uI6oP9a
+
+VITE_FIREBASE_API_KEY=AIzaSyCvUJiZlQMztRs61qTZD7UnY5AYQQ3N1TM
+VITE_FIREBASE_PROJECT_ID=onlyu1020-c6696
+VITE_FIREBASE_AUTH_DOMAIN=onlyu1020-c6696.firebaseapp.com
+VITE_FIREBASE_STORAGE_BUCKET=onlyu1020-c6696.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=627626524087
+VITE_FIREBASE_APP_ID=1:627626524087:web:3fb2db22334c6c4e79bc32
+
+VITE_STRIPE_PUBLIC_KEY=pk_live_51SJLZVQXzSGbl6lJ6uiGIHc5dIir5GbtrS0I9g4S3SokXhDuH3eXcK3F7KD4RjdWGtwtuBzcqMyT50pBV1GB1tOs00WNjwwGnW
+STRIPE_SECRET_KEY=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
+
+STORAGE_PROVIDER=firebase
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.20 building for production...
+transforming (3) src/main.jsxBrowserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2900 modules transformed.
+../dist/public/index.html                                                           1.99 kB │ gzip:   0.77 kB
+../dist/public/assets/S__23355436_1761458269036-DnkfgHoF.jpg                       36.69 kB
+../dist/public/assets/S__23355435_1761458437613-ZtUTYoEc.jpg                       51.25 kB
+../dist/public/assets/00465-2336099699_0_1760917144954-6NSR4Dbx.jpg                59.23 kB
+../dist/public/assets/00021-2650716505_0_1760917144954-CbSPvP-L.jpg                71.74 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.17.14_1760917144953-C-4BMTeW.png    352.54 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.23.36_1760917144953-C5nM0uTg.png    374.27 kB
+../dist/public/assets/00035-3167998813_1760917144953-djSIga3e.png                 581.24 kB
+../dist/public/assets/00220-1604543024_0_1760917144953-DgriXLtA.png               632.22 kB
+../dist/public/assets/1_1761457956151-sxUpn9Sz.png                              3,238.67 kB
+../dist/public/assets/3_1761457956151-BpStuj2a.png                              3,495.80 kB
+../dist/public/assets/2_1761457956151-D6P7x4Q3.png                              3,792.85 kB
+../dist/public/assets/index-Cjs4TzwM.css                                          181.51 kB │ gzip:  26.96 kB
+../dist/public/assets/index-IK1SN_SD.js                                         2,061.70 kB │ gzip: 494.32 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.41s
+
+  dist/index.js  54.4kb
+
+⚡ Done in 7ms
+[PM2] Applying action deleteProcessId on app [only-u](ids: [ 0 ])
+[PM2] [only-u](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Starting /usr/bin/npm in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 0    │ online    │ 0%       │ 15.0mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 50 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-out.log last 50 lines:
+/root/.pm2/logs/only-u-error.log last 50 lines:
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:490:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | TypeError: fetch failed
+0|only-u   |     at node:internal/deps/undici/undici:13510:13
+0|only-u   |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|only-u   |     at async getDefaultBucketId (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:62:20)
+0|only-u   |     at async Client.init (file:///var/www/only-u/node_modules/@replit/object-storage/dist/index.mjs:99:51) {
+0|only-u   |   [cause]: Error: connect ECONNREFUSED 127.0.0.1:1106
+0|only-u   |       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+0|only-u   |     errno: -111,
+0|only-u   |     code: 'ECONNREFUSED',
+0|only-u   |     syscall: 'connect',
+0|only-u   |     address: '127.0.0.1',
+0|only-u   |     port: 1106
+0|only-u   |   }
+0|only-u   | }
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:220:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+# 1. 環境変数ファイルを確認
+cat .env.production
+
+# 2. distフォルダを完全削除
+rm -rf dist
+
+# 3. 完全再ビルド
+npm run build
+
+# 4. PM2を完全削除して再起動
+pm2 delete only-u
+pm2 start npm --name "only-u" -- start
+
+# 5. ログ確認
+pm2 logs only-u --lines 30
+# ステップ1: 環境変数ファイルが存在するか確認
+ls -la .env.production
+^C
+root@srv1087935:/var/www/only-u# # ステップ1: 環境変数ファイルが存在するか確認
+ls -la .env.production
+-rw-r--r-- 1 root root 764 Oct 27 10:28 .env.production
+root@srv1087935:/var/www/only-u# cat .env.production
+NODE_ENV=production
+PORT=5000
+VITE_API_URL=https://only-u.fun
+SESSION_SECRET=vK8mN3xP9qR2wE5tY7uI0oP3aS6dF8gH1jK4lZ7xC9vB2nM5qW8eR1tY4uI6oP9a
+
+VITE_FIREBASE_API_KEY=AIzaSyCvUJiZlQMztRs61qTZD7UnY5AYQQ3N1TM
+VITE_FIREBASE_PROJECT_ID=onlyu1020-c6696
+VITE_FIREBASE_AUTH_DOMAIN=onlyu1020-c6696.firebaseapp.com
+VITE_FIREBASE_STORAGE_BUCKET=onlyu1020-c6696.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=627626524087
+VITE_FIREBASE_APP_ID=1:627626524087:web:3fb2db22334c6c4e79bc32
+
+VITE_STRIPE_PUBLIC_KEY=pk_live_51SJLZVQXzSGbl6lJ6uiGIHc5dIir5GbtrS0I9g4S3SokXhDuH3eXcK3F7KD4RjdWGtwtuBzcqMyT50pBV1GB1tOs00WNjwwGnW
+STRIPE_SECRET_KEY=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
+
+STORAGE_PROVIDER=firebase
+root@srv1087935:/var/www/only-u# # distフォルダを削除
+rm -rf dist
+
+# 完全再ビルド
+npm run build
+
+# PM2を削除
+pm2 delete only-u
+
+# 環境変数を読み込んでPM2起動
+pm2 start npm --name "only-u" --env production -- start
+
+# 環境変数を保存
+pm2 save
+
+# ログ確認
+pm2 logs only-u --lines 50
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.20 building for production...
+transforming (4) src/i18n/index.jsxBrowserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2900 modules transformed.
+../dist/public/index.html                                                           1.99 kB │ gzip:   0.77 kB
+../dist/public/assets/S__23355436_1761458269036-DnkfgHoF.jpg                       36.69 kB
+../dist/public/assets/S__23355435_1761458437613-ZtUTYoEc.jpg                       51.25 kB
+../dist/public/assets/00465-2336099699_0_1760917144954-6NSR4Dbx.jpg                59.23 kB
+../dist/public/assets/00021-2650716505_0_1760917144954-CbSPvP-L.jpg                71.74 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.17.14_1760917144953-C-4BMTeW.png    352.54 kB
+../dist/public/assets/スクリーンショット 2025-10-08 22.23.36_1760917144953-C5nM0uTg.png    374.27 kB
+../dist/public/assets/00035-3167998813_1760917144953-djSIga3e.png                 581.24 kB
+../dist/public/assets/00220-1604543024_0_1760917144953-DgriXLtA.png               632.22 kB
+../dist/public/assets/1_1761457956151-sxUpn9Sz.png                              3,238.67 kB
+../dist/public/assets/3_1761457956151-BpStuj2a.png                              3,495.80 kB
+../dist/public/assets/2_1761457956151-D6P7x4Q3.png                              3,792.85 kB
+../dist/public/assets/index-Cjs4TzwM.css                                          181.51 kB │ gzip:  26.96 kB
+../dist/public/assets/index-IK1SN_SD.js                                         2,061.70 kB │ gzip: 494.32 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.36s
+
+  dist/index.js  54.4kb
+
+⚡ Done in 6ms
+[PM2] Applying action deleteProcessId on app [only-u](ids: [ 0 ])
+[PM2] [only-u](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Starting /usr/bin/npm in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ only-u             │ fork     │ 0    │ online    │ 0%       │ 17.8mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /root/.pm2/dump.pm2
+[TAILING] Tailing last 50 lines for [only-u] process (change the value with --lines option)
+/root/.pm2/logs/only-u-error.log last 50 lines:
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u   | 
+0|only-u   | Node.js v20.19.5
+0|only-u   | file:///var/www/only-u/dist/index.js:217
+0|only-u   |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u   |         ^
+0|only-u   | 
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u   | 
+0|only-u   | Node.js v20.19.5
+0|only-u   | file:///var/www/only-u/dist/index.js:217
+0|only-u   |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u   |         ^
+0|only-u   | 
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u   | 
+0|only-u   | Node.js v20.19.5
+0|only-u   | file:///var/www/only-u/dist/index.js:217
+0|only-u   |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u   |         ^
+0|only-u   | 
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u   | 
+0|only-u   | Node.js v20.19.5
+0|only-u   | file:///var/www/only-u/dist/index.js:217
+0|only-u   |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u   |         ^
+0|only-u   | 
+0|only-u   | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u   |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u   | 
+0|only-u   | Node.js v20.19.5
+
+/root/.pm2/logs/only-u-out.log last 50 lines:
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+0|only-u   | 
+0|only-u   | > rest-express@1.0.0 start
+0|only-u   | > NODE_ENV=production node dist/index.js
+0|only-u   | 
+
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+0|only-u  | > rest-express@1.0.0 start
+0|only-u  | > NODE_ENV=production node dist/index.js
+0|only-u  | file:///var/www/only-u/dist/index.js:217
+0|only-u  |   throw new Error("Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.");
+0|only-u  |         ^
+0|only-u  | Error: Missing required environment variable: SESSION_SECRET. Admin authentication requires this for secure token signing.
+0|only-u  |     at file:///var/www/only-u/dist/index.js:217:9
+0|only-u  |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0|only-u  |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+0|only-u  |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|only-u  | Node.js v20.19.5
+
