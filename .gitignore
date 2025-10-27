@@ -113,3 +113,6 @@ firebase-admin-key.json
 
 # TypeScript
 *.tsbuildinfo
+
+# Attached assets (may contain sensitive data)
+attached_assets/
