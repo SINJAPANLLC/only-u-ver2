@@ -192,7 +192,9 @@ const Ranking = () => {
                     const freshnessBonus = calculateFreshnessBonus(data.createdAt);
                     
                     // サムネイルURLを取得してプロキシURLに変換
-                    const originalThumbnail = data.files && data.files.length > 0 ? data.files[0].thumbnailUrl : null;
+                    const originalThumbnail = data.files && data.files.length > 0 
+                        ? (data.files[0].thumbnailUrl || data.files[0].url) 
+                        : null;
                     const proxyThumbnail = convertToProxyUrl(originalThumbnail);
                     
                     // 動画の実際のファイルURLを取得

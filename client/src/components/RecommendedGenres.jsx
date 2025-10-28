@@ -80,7 +80,7 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
                     
                     return (
                         <motion.div
-                            key={genre.name}
+                            key={genre.nameKey}
                             initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 + 0.8 }}
