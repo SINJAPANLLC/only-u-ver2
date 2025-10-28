@@ -97,6 +97,48 @@ const CreatePostPage = () => {
         setUploadedFiles(prev => prev.filter((_, i) => i !== index));
     };
 
+    // Generate thumbnail from video
+    const generateVideoThumbnail = (file) => {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            video.preload = 'metadata';
+            video.muted = true;
+            video.playsInline = true;
+            
+            video.onloadeddata = () => {
+                // Seek to 1 second or 10% of video duration
+                const seekTime = Math.min(1, video.duration * 0.1);
+                video.currentTime = seekTime;
+            };
+            
+            video.onseeked = () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Failed to generate thumbnail'));
+                    }
+                }, 'image/jpeg', 0.8);
+                
+                URL.revokeObjectURL(video.src);
+            };
+            
+            video.onerror = () => {
+                URL.revokeObjectURL(video.src);
+                reject(new Error('Failed to load video'));
+            };
+            
+            video.src = URL.createObjectURL(file);
+        });
+    };
+
     // Upload files to Replit Object Storage (server-side upload using @replit/object-storage)
     const uploadFilesToObjectStorage = async (files, postId) => {
         console.log(`Object Storage アップロード開始: ${files.length}個のファイル、投稿ID: ${postId}`);
@@ -139,6 +181,40 @@ const CreatePostPage = () => {
                 console.log('Object Storage Path:', objectPath);
                 console.log('Storage URI:', storageUri);
 
+                // Generate and upload thumbnail for videos
+                let thumbnailUrl = null;
+                if (contentType.startsWith('video/')) {
+                    try {
+                        setCurrentStep(`${file.name}のサムネイルを生成中...`);
+                        console.log('Generating thumbnail for video...');
+                        
+                        const thumbnailBlob = await generateVideoThumbnail(file);
+                        const thumbnailFile = new File([thumbnailBlob], `thumbnail-${fileName}.jpg`, { type: 'image/jpeg' });
+                        
+                        // Upload thumbnail
+                        const thumbnailFormData = new FormData();
+                        thumbnailFormData.append('file', thumbnailFile);
+                        thumbnailFormData.append('visibility', isExclusiveContent ? 'private' : 'public');
+                        
+                        const thumbnailResponse = await fetch('/api/objects/upload', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${idToken}`,
+                            },
+                            body: thumbnailFormData,
+                        });
+                        
+                        if (thumbnailResponse.ok) {
+                            const thumbnailData = await thumbnailResponse.json();
+                            thumbnailUrl = thumbnailData.objectPath;
+                            console.log('Thumbnail uploaded:', thumbnailUrl);
+                        }
+                    } catch (error) {
+                        console.error('Failed to generate/upload thumbnail:', error);
+                        // Continue without thumbnail if generation fails
+                    }
+                }
+
                 // Use objectPath for API references (will be proxied through /api/proxy)
                 uploadedResults.push({
                     fileName: fileName,
@@ -148,7 +224,7 @@ const CreatePostPage = () => {
                     size: size,
                     source: 'replit-object-storage',
                     resourceType: contentType.startsWith('video/') ? 'video' : 'image',
-                    thumbnailUrl: contentType.startsWith('video/') ? objectPath : null,
+                    thumbnailUrl: thumbnailUrl,
                     objectPath: objectPath,
                     storageUri: storageUri, // Store both for reference
                 });
