@@ -1352,7 +1352,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'Accept-Ranges': 'bytes',
           'Content-Length': chunkSize,
           'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'ETag': `"${filename}"`,
         });
         
         // Send the requested range
@@ -1363,7 +1364,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'Content-Length': fileSize,
           'Content-Type': contentType,
           'Accept-Ranges': 'bytes',
-          'Cache-Control': 'public, max-age=31536000',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'ETag': `"${filename}"`,
         });
         
         res.end(fileBuffer);

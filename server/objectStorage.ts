@@ -104,8 +104,10 @@ export class ObjectStorageService {
       res.set({
         "Content-Type": contentType,
         "Content-Length": fileBuffer.length.toString(),
-        "Cache-Control": `public, max-age=${cacheTtlSec}`,
+        "Cache-Control": `public, max-age=${cacheTtlSec}, immutable`,
         "Accept-Ranges": "bytes",
+        "ETag": `"${filename}"`,
+        "Vary": "Accept-Encoding",
       });
 
       res.send(fileBuffer);
