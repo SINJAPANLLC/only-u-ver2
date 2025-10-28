@@ -146,13 +146,17 @@ const RevenueManagement = () => {
       
       // 統計を更新
       setStats(prev => {
+        // 振込申請がない場合は、トランザクションベースの計算を保持
+        const finalSystemFee = totalSystemFee > 0 ? totalSystemFee : prev.transferSystemFee;
+        const finalBankFee = totalBankFee > 0 ? totalBankFee : prev.transferBankFee;
+        
         // 総プラットフォーム利益 = 購入時収益 + システム利用料 + 振込手数料
-        const totalPlatformProfit = (prev.platformFee + prev.tax) + totalSystemFee + totalBankFee;
+        const totalPlatformProfit = (prev.platformFee + prev.tax) + finalSystemFee + finalBankFee;
         
         return {
           ...prev,
-          transferSystemFee: totalSystemFee,
-          transferBankFee: totalBankFee,
+          transferSystemFee: finalSystemFee,
+          transferBankFee: finalBankFee,
           totalPlatformProfit: totalPlatformProfit,
           actualCreatorPayouts: totalActualPayouts
         };
