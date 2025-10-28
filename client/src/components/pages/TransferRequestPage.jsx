@@ -149,13 +149,16 @@ const TransferRequestPage = () => {
         netAmount: netAmount,
         isEarlyPayment: isEarlyPayment,
         paymentDate: paymentDate,
-        bankName: bankAccount.bankName,
-        branchName: bankAccount.branchName,
-        accountType: bankAccount.accountType,
-        accountNumber: bankAccount.accountNumber,
-        accountHolder: bankAccount.accountHolder,
+        bankInfo: {
+          bankName: bankAccount.bankName,
+          branchName: bankAccount.branchName,
+          accountType: bankAccount.accountType,
+          accountNumber: bankAccount.accountNumber,
+          accountHolder: bankAccount.accountHolder
+        },
         status: 'pending',
         type: isEarlyPayment ? 'early' : 'normal',
+        requestDate: new Date(),
         createdAt: new Date()
       });
 
