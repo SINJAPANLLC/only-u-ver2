@@ -964,6 +964,7 @@ const SocialFeedScreen = () => {
                 <img
                   src={posts[currentPostIndex].thumbnail || posts[currentPostIndex].imageUrl}
                   alt={posts[currentPostIndex].title}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     console.error('Image load error:', e);
@@ -1027,6 +1028,7 @@ const SocialFeedScreen = () => {
                   <motion.img
                     src={posts[currentPostIndex].userAvatar}
                     alt={posts[currentPostIndex].userName}
+                    loading="lazy"
                     className="w-12 h-12 rounded-full border-2 border-white shadow-lg object-cover"
                     animate={{ 
                       boxShadow: [
@@ -1348,6 +1350,7 @@ const SocialFeedScreen = () => {
                       <img
                         src={comment.userAvatar}
                         alt={comment.userName}
+                        loading="lazy"
                         className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                       />
                       <div className="flex-1">
@@ -1371,6 +1374,7 @@ const SocialFeedScreen = () => {
                     <img
                       src={currentUser.photoURL || 'https://via.placeholder.com/150'}
                       alt={currentUser.displayName || 'You'}
+                      loading="lazy"
                       className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                     />
                     <div className="flex-1 flex space-x-2">

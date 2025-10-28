@@ -498,7 +498,8 @@ const Ranking = () => {
                                         <video
                                             src={post.thumbnail}
                                             className="w-full h-full object-cover"
-                                            preload="metadata"
+                                            preload="none"
+                                            loading="lazy"
                                             muted
                                             playsInline
                                             style={{ pointerEvents: 'none' }}
@@ -512,6 +513,7 @@ const Ranking = () => {
                                         <motion.img
                                             src={post.thumbnail}
                                             alt={post.title}
+                                            loading="lazy"
                                             className="w-full h-full object-cover"
                                             animate={{ 
                                                 scale: [1, 1.05, 1],
@@ -536,6 +538,7 @@ const Ranking = () => {
                                         <img 
                                             src="/genre-1.png" 
                                             alt={post.title}
+                                            loading="lazy"
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
@@ -599,6 +602,7 @@ const Ranking = () => {
                                         <img
                                             src={post.user.avatar}
                                             alt={post.user.name}
+                                            loading="lazy"
                                             className="w-6 h-6 rounded-full mr-2 object-cover ring-1 ring-pink-100"
                                             onError={(e) => {
                                                 e.target.style.display = 'none';

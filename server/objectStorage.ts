@@ -101,10 +101,16 @@ export class ObjectStorageService {
       else if (ext === 'jpg' || ext === 'jpeg') contentType = 'image/jpeg';
       else if (ext === 'png') contentType = 'image/png';
       
+      // Determine cache control based on visibility (public vs private)
+      const isPublic = filePath.startsWith('public/');
+      const cacheControl = isPublic 
+        ? `public, max-age=${cacheTtlSec}, immutable`  // Public files: long-term caching
+        : `private, max-age=3600`;  // Private files: short-term, private caching only
+      
       res.set({
         "Content-Type": contentType,
         "Content-Length": fileBuffer.length.toString(),
-        "Cache-Control": `public, max-age=${cacheTtlSec}, immutable`,
+        "Cache-Control": cacheControl,
         "Accept-Ranges": "bytes",
         "ETag": `"${filename}"`,
         "Vary": "Accept-Encoding",

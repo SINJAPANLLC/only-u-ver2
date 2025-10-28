@@ -97,7 +97,7 @@ const CreatePostPage = () => {
         setUploadedFiles(prev => prev.filter((_, i) => i !== index));
     };
 
-    // Generate thumbnail from video
+    // Generate thumbnail from video (optimized with compression)
     const generateVideoThumbnail = (file) => {
         return new Promise((resolve, reject) => {
             const video = document.createElement('video');
@@ -115,17 +115,36 @@ const CreatePostPage = () => {
             };
             
             video.onseeked = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                // Optimize thumbnail size: max 600px on longest side
+                const MAX_SIZE = 600;
+                let width = video.videoWidth;
+                let height = video.videoHeight;
                 
+                if (width > height) {
+                    if (width > MAX_SIZE) {
+                        height = Math.round((height * MAX_SIZE) / width);
+                        width = MAX_SIZE;
+                    }
+                } else {
+                    if (height > MAX_SIZE) {
+                        width = Math.round((width * MAX_SIZE) / height);
+                        height = MAX_SIZE;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+                
+                // Compress to JPEG with 0.7 quality (smaller file size)
                 canvas.toBlob((blob) => {
                     if (blob) {
+                        console.log(`📸 サムネイル生成完了: ${(blob.size / 1024).toFixed(2)} KB (元: ${width}x${height})`);
                         resolve(blob);
                     } else {
                         reject(new Error('Failed to generate thumbnail'));
                     }
-                }, 'image/jpeg', 0.8);
+                }, 'image/jpeg', 0.7);
                 
                 URL.revokeObjectURL(video.src);
             };

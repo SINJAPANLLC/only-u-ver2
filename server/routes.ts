@@ -1339,6 +1339,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const fileSize = fileBuffer.length;
       
+      // Determine cache control based on visibility (public vs private)
+      const isPublic = filePath.startsWith('public/');
+      const cacheControl = isPublic 
+        ? 'public, max-age=31536000, immutable'  // Public files: long-term caching
+        : 'private, max-age=3600';  // Private files: short-term, private caching only
+      
       // Handle Range requests for video streaming
       const range = req.headers.range;
       if (range) {
@@ -1352,7 +1358,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'Accept-Ranges': 'bytes',
           'Content-Length': chunkSize,
           'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Cache-Control': cacheControl,
           'ETag': `"${filename}"`,
         });
         
@@ -1364,7 +1370,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'Content-Length': fileSize,
           'Content-Type': contentType,
           'Accept-Ranges': 'bytes',
-          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Cache-Control': cacheControl,
           'ETag': `"${filename}"`,
         });
         
