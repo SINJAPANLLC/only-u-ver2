@@ -181,7 +181,7 @@ const CreatePostPage = () => {
                 console.log('Object Storage Path:', objectPath);
                 console.log('Storage URI:', storageUri);
 
-                // Generate and upload thumbnail for videos
+                // Generate and upload thumbnail for videos, or use image itself for images
                 let thumbnailUrl = null;
                 if (contentType.startsWith('video/')) {
                     try {
@@ -213,6 +213,10 @@ const CreatePostPage = () => {
                         console.error('Failed to generate/upload thumbnail:', error);
                         // Continue without thumbnail if generation fails
                     }
+                } else if (contentType.startsWith('image/')) {
+                    // For images, use the image itself as the thumbnail
+                    thumbnailUrl = objectPath;
+                    console.log('Using image as thumbnail:', thumbnailUrl);
                 }
 
                 // Use objectPath for API references (will be proxied through /api/proxy)
