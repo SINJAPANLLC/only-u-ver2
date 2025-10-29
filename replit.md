@@ -37,6 +37,12 @@ The platform utilizes a modern web architecture comprising a React frontend buil
 *   Notification system leverages Firestore for real-time updates and includes client-side filtering and read-state synchronization.
 *   Featured pickup and creator management allow administrators to curate content and creators with dedicated interfaces and real-time updates.
 *   Payment calculations include detailed breakdowns for platform fees, taxes, and creator earnings, both for user subscriptions and creator withdrawals.
+*   **Performance Optimizations (October 29, 2025)**:
+    - **LRU Cache System**: Implemented `lru-cache` library for file metadata caching (1-hour TTL) to reduce Firebase Storage API calls
+    - **Streaming Optimization**: Range request support using `createReadStream` for efficient video streaming with 206 Partial Content responses
+    - **Proxy URL Conversion**: Firebase Storage URLs automatically converted to optimized proxy endpoints (`/api/proxy/:folder/:filename`)
+    - **React Performance**: Applied `useCallback`, `useMemo` to RomanticRanking component to minimize re-renders
+    - **File**: `server/objectStorage.ts` (LRU cache + streaming), `server/routes.ts` (proxy endpoint), `client/src/components/RomanticRanking.jsx` (URL conversion + React optimization)
 *   **Deployment Configuration (Autoscale)**:
     - **Changed from Reserved VM to Autoscale** (October 27, 2025): Autoscale is recommended for web applications with HTTP/WebSocket traffic and provides better uptime (99.95% vs 99.9%)
     - Build: `npm run build` (Vite frontend + esbuild backend bundling to dist/)
