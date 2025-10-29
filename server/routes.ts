@@ -1296,9 +1296,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Proxy endpoint for Object Storage files
   // Serves files from Object Storage while respecting visibility and ACL policies
   // Supports Range requests for video streaming
+  // 🚀 画像自動リサイズ機能付き
   app.get("/api/proxy/:folder/:filename", async (req, res) => {
     try {
       const { folder, filename } = req.params;
+      const { thumbnail, w, h } = req.query;
       
       // Construct object path in the format getObjectEntityFile expects: /objects/filename
       const objectPath = `/objects/${filename}`;
@@ -1310,6 +1312,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get the file path from Object Storage (it will search in public/private dirs automatically)
       const filePath = await objectStorageService.getObjectEntityFile(objectPath);
       
+      // 🚀 画像リサイズ処理（画像ファイルのみ）
+      const isImage = filename.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+      const shouldResize = isImage && (thumbnail === 'true' || w || h);
+      
+      if (shouldResize) {
+        try {
+          // Import sharp for image processing
+          const sharp = (await import('sharp')).default;
+          
+          // Get file from Object Storage as buffer
+          const fileBuffer = await objectStorageService.getObjectBuffer(filePath);
+          
+          // リサイズ設定
+          let width = thumbnail === 'true' ? 400 : (w ? parseInt(w as string) : undefined);
+          let height = thumbnail === 'true' ? 400 : (h ? parseInt(h as string) : undefined);
+          
+          // 最大サイズ制限（セキュリティ対策）
+          if (width && width > 2000) width = 2000;
+          if (height && height > 2000) height = 2000;
+          
+          // sharpで画像をリサイズ
+          const resizedBuffer = await sharp(fileBuffer)
+            .resize(width, height, {
+              fit: 'cover',
+              position: 'center'
+            })
+            .jpeg({ quality: 85 }) // JPEGに変換して圧縮
+            .toBuffer();
+          
+          // キャッシュヘッダーを設定
+          res.set({
+            'Content-Type': 'image/jpeg',
+            'Cache-Control': 'public, max-age=31536000', // 1年間キャッシュ
+            'Content-Length': resizedBuffer.length
+          });
+          
+          return res.send(resizedBuffer);
+        } catch (resizeError) {
+          console.error('Error resizing image, falling back to original:', resizeError);
+          // リサイズ失敗時は元のファイルをストリーミング
+        }
+      }
+      
+      // 動画または通常のファイルの場合は最適化されたストリーミング
       // Use the optimized downloadObject method with streaming, caching, and Range support
       // This method handles:
       // - LRU cache for signed URLs and metadata

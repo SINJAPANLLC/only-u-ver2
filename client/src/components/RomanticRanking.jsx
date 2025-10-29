@@ -174,10 +174,11 @@ const Ranking = () => {
             try {
                 const postsRef = collection(db, 'posts');
                 
+                // 🚀 最適化: 50件 → 10件に削減（6件表示なので10件で十分）
                 const q = query(
                     postsRef,
                     orderBy('createdAt', 'desc'),
-                    limit(50)
+                    limit(10)
                 );
                 
                 const querySnapshot = await getDocs(q);
@@ -251,25 +252,50 @@ const Ranking = () => {
                 
                 const topPosts = sortedPosts.slice(0, 6);
                 
-                const postsWithUserInfo = await Promise.all(topPosts.map(async (post) => {
+                // 🚀 最適化: ユーザー情報を一括取得（6回 → 1回のクエリ、必要なユーザーのみ）
+                const uniqueUserIds = [...new Set(topPosts.map(post => post.user.id))];
+                const usersMap = {};
+                
+                // ユーザー情報を一括取得（Firestore の where('__name__', 'in', ...) を使用）
+                // Note: Firestore の 'in' は最大10件まで、それ以上の場合は分割クエリ
+                if (uniqueUserIds.length > 0) {
                     try {
-                        const userDoc = await getDoc(doc(db, 'users', post.user.id));
-                        if (userDoc.exists()) {
-                            const userData = userDoc.data();
-                            return {
-                                ...post,
-                                user: {
-                                    id: post.user.id,
-                                    name: userData.displayName || userData.username || post.user.name,
-                                    avatar: userData.photoURL || userData.avatar || post.user.avatar
-                                }
-                            };
+                        const usersRef = collection(db, 'users');
+                        // 10件ずつ分割してクエリ（Firestoreの制限対応）
+                        const chunks = [];
+                        for (let i = 0; i < uniqueUserIds.length; i += 10) {
+                            chunks.push(uniqueUserIds.slice(i, i + 10));
                         }
+                        
+                        // 各チャンクを並列で取得
+                        await Promise.all(chunks.map(async (chunk) => {
+                            const { query: firestoreQuery, where, documentId } = await import('firebase/firestore');
+                            const q = firestoreQuery(usersRef, where(documentId(), 'in', chunk));
+                            const usersSnapshot = await getDocs(q);
+                            usersSnapshot.forEach(doc => {
+                                usersMap[doc.id] = doc.data();
+                            });
+                        }));
                     } catch (error) {
-                        console.error(`Error fetching user ${post.user.id}:`, error);
+                        console.error('Error fetching users:', error);
+                    }
+                }
+                
+                // 取得したユーザー情報を投稿データにマージ
+                const postsWithUserInfo = topPosts.map(post => {
+                    const userData = usersMap[post.user.id];
+                    if (userData) {
+                        return {
+                            ...post,
+                            user: {
+                                id: post.user.id,
+                                name: userData.displayName || userData.username || post.user.name,
+                                avatar: userData.photoURL || userData.avatar || post.user.avatar
+                            }
+                        };
                     }
                     return post;
-                }));
+                });
                 
                 if (postsWithUserInfo.length === 0) {
                     const samplePosts = [
@@ -584,9 +610,9 @@ const RankingCard = React.memo(({
                             }}
                         />
                     ) : (
-                        /* 画像の場合：遅延ロード */
+                        /* 画像の場合：リサイズ済みサムネイルを遅延ロード（400x400px） */
                         <motion.img
-                            src={isVisible ? post.thumbnail : undefined}
+                            src={isVisible ? `${post.thumbnail}?thumbnail=true` : undefined}
                             alt={post.title}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             loading="lazy"

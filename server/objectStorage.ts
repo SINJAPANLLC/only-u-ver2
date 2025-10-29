@@ -282,6 +282,20 @@ export class ObjectStorageService {
     throw new ObjectNotFoundError();
   }
 
+  // 🚀 Get object as Buffer (for image resizing)
+  async getObjectBuffer(filePath: string): Promise<Buffer> {
+    const bucket = await getFirebaseStorageBucket();
+    const file = bucket.file(filePath);
+    
+    const [exists] = await file.exists();
+    if (!exists) {
+      throw new ObjectNotFoundError();
+    }
+    
+    const [buffer] = await file.download();
+    return buffer;
+  }
+
   async normalizeObjectEntityPath(rawPath: string): Promise<string> {
     // Handle Firebase Storage URLs
     if (rawPath.startsWith("https://firebasestorage.googleapis.com/") || 
