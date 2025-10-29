@@ -587,8 +587,8 @@ const RankingCard = React.memo(({
             ref={cardRef}
             variants={itemVariants}
             whileHover={isMobile ? {} : { y: -8, scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer group"
+            whileTap={isMobile ? {} : { scale: 0.98 }}
+            className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer group active:opacity-80"
             onClick={() => handleVideoClick(post)}
             data-testid={`ranking-card-${post.id}`}
         >
@@ -611,10 +611,10 @@ const RankingCard = React.memo(({
                         />
                     ) : (
                         /* 画像の場合：リサイズ済みサムネイルを遅延ロード（400x400px） */
-                        <motion.img
-                            src={isVisible ? `${post.thumbnail}?thumbnail=true` : undefined}
+                        <img
+                            src={isVisible && post.thumbnail ? `${post.thumbnail}${post.thumbnail.includes('?') ? '&' : '?'}thumbnail=true` : undefined}
                             alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            className="w-full h-full object-cover"
                             loading="lazy"
                             onError={(e) => {
                                 e.target.style.display = 'none';
