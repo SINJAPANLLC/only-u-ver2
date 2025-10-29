@@ -1,8 +1,9 @@
 // Object Storage Service for managing large video and image uploads
-// Modified for VPS deployment - uses Firebase Storage instead of Replit Object Storage
+// Optimized with LRU cache, Range request support, and streaming
 import { Storage as FirebaseStorage } from "firebase-admin/storage";
 import { Response } from "express";
 import { randomUUID } from "crypto";
+import { LRUCache } from "lru-cache";
 
 export class ObjectNotFoundError extends Error {
   constructor() {
@@ -23,6 +24,20 @@ async function getFirebaseStorageBucket() {
   return firebaseStorageBucket;
 }
 
+// LRU Cache for signed URLs (1 hour TTL, max 500 items)
+const signedUrlCache = new LRUCache<string, { url: string; expiresAt: number }>({
+  max: 500,
+  ttl: 1000 * 60 * 60, // 1 hour
+  updateAgeOnGet: true,
+});
+
+// LRU Cache for file metadata (size, contentType)
+const fileMetadataCache = new LRUCache<string, { size: number; contentType: string; etag: string }>({
+  max: 1000,
+  ttl: 1000 * 60 * 60, // 1 hour
+  updateAgeOnGet: true,
+});
+
 export class ObjectStorageService {
   constructor() {}
 
@@ -42,8 +57,6 @@ export class ObjectStorageService {
     const folderPath = visibility === 'public' ? 'public' : 'private';
     const fullStoragePath = `${folderPath}/${objectId}.${extension}`;
 
-    console.log('[uploadFile] Uploading to Firebase Storage:', fullStoragePath);
-
     try {
       const file = bucket.file(fullStoragePath);
       await file.save(fileBuffer, {
@@ -61,9 +74,15 @@ export class ObjectStorageService {
         await file.makePublic();
       }
 
-      console.log('[uploadFile] Upload successful to Firebase Storage!');
+      // Cache metadata
+      const etag = `"${objectId}"`;
+      fileMetadataCache.set(fullStoragePath, {
+        size: fileBuffer.length,
+        contentType: contentType || 'application/octet-stream',
+        etag
+      });
+
     } catch (error) {
-      console.error('[uploadFile] Failed to upload to Firebase Storage:', error);
       throw new Error(`Failed to upload file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
     
@@ -76,51 +95,154 @@ export class ObjectStorageService {
     };
   }
 
-  // Download file from Firebase Storage
+  // Get signed URL with caching
+  private async getSignedUrl(filePath: string): Promise<string> {
+    const cached = signedUrlCache.get(filePath);
+    const now = Date.now();
+    
+    // Return cached URL if still valid (with 5 min buffer)
+    if (cached && cached.expiresAt > now + 5 * 60 * 1000) {
+      return cached.url;
+    }
+
+    const bucket = await getFirebaseStorageBucket();
+    const file = bucket.file(filePath);
+    
+    // Generate signed URL valid for 1 hour
+    const [url] = await file.getSignedUrl({
+      action: 'read',
+      expires: Date.now() + 60 * 60 * 1000, // 1 hour
+    });
+
+    // Cache the signed URL
+    signedUrlCache.set(filePath, {
+      url,
+      expiresAt: now + 60 * 60 * 1000,
+    });
+
+    return url;
+  }
+
+  // Get file metadata with caching
+  private async getFileMetadata(filePath: string): Promise<{ size: number; contentType: string; etag: string }> {
+    const cached = fileMetadataCache.get(filePath);
+    if (cached) {
+      return cached;
+    }
+
+    const bucket = await getFirebaseStorageBucket();
+    const file = bucket.file(filePath);
+    const [metadata] = await file.getMetadata();
+
+    const size = parseInt(String(metadata.size) || '0');
+    const contentType = this.getContentType(filePath);
+    const etag = metadata.etag || `"${filePath.split('/').pop()}"`;
+
+    const fileMetadata = { size, contentType, etag };
+    fileMetadataCache.set(filePath, fileMetadata);
+
+    return fileMetadata;
+  }
+
+  // Determine content type from filename
+  private getContentType(filePath: string): string {
+    const ext = filePath.toLowerCase().split('.').pop();
+    switch (ext) {
+      case 'mp4': return 'video/mp4';
+      case 'mov': return 'video/quicktime';
+      case 'webm': return 'video/webm';
+      case 'jpg':
+      case 'jpeg': return 'image/jpeg';
+      case 'png': return 'image/png';
+      case 'gif': return 'image/gif';
+      case 'webp': return 'image/webp';
+      default: return 'application/octet-stream';
+    }
+  }
+
+  // Download file with Range request support and streaming
   async downloadObject(filePath: string, res: Response, cacheTtlSec: number = 3600) {
     try {
       const bucket = await getFirebaseStorageBucket();
-      console.log('[downloadObject] Downloading file from Firebase:', filePath);
-      
       const file = bucket.file(filePath);
-      const [exists] = await file.exists();
       
+      const [exists] = await file.exists();
       if (!exists) {
         throw new Error('File not found');
       }
 
-      const [fileBuffer] = await file.download();
-      console.log('[downloadObject] Downloaded successfully, size:', fileBuffer.length, 'bytes');
-      
-      // Determine content type from filename
-      const filename = filePath.split('/').pop() || '';
-      const ext = filename.toLowerCase().split('.').pop();
-      let contentType = 'application/octet-stream';
-      if (ext === 'mov' || ext === 'mp4') contentType = 'video/quicktime';
-      else if (ext === 'webm') contentType = 'video/webm';
-      else if (ext === 'jpg' || ext === 'jpeg') contentType = 'image/jpeg';
-      else if (ext === 'png') contentType = 'image/png';
-      
-      // Determine cache control based on visibility (public vs private)
+      // Get file metadata
+      const { size, contentType, etag } = await this.getFileMetadata(filePath);
+
+      // Check if client already has the file (ETag matching)
+      const clientEtag = res.req.headers['if-none-match'];
+      if (clientEtag === etag) {
+        res.status(304).end();
+        return;
+      }
+
+      // Parse Range header
+      const range = res.req.headers.range;
       const isPublic = filePath.startsWith('public/');
       const cacheControl = isPublic 
-        ? `public, max-age=${cacheTtlSec}, immutable`  // Public files: long-term caching
-        : `private, max-age=3600`;  // Private files: short-term, private caching only
-      
-      res.set({
-        "Content-Type": contentType,
-        "Content-Length": fileBuffer.length.toString(),
-        "Cache-Control": cacheControl,
-        "Accept-Ranges": "bytes",
-        "ETag": `"${filename}"`,
-        "Vary": "Accept-Encoding",
-      });
+        ? `public, max-age=${cacheTtlSec}, immutable`
+        : `private, max-age=3600`;
 
-      res.send(fileBuffer);
+      // Handle Range request (streaming)
+      if (range) {
+        const parts = range.replace(/bytes=/, '').split('-');
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : size - 1;
+        const chunkSize = (end - start) + 1;
+
+        // Set 206 Partial Content headers
+        res.status(206);
+        res.set({
+          'Content-Range': `bytes ${start}-${end}/${size}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunkSize.toString(),
+          'Content-Type': contentType,
+          'Cache-Control': cacheControl,
+          'ETag': etag,
+        });
+
+        // Stream the requested range
+        const readStream = file.createReadStream({ start, end });
+        readStream.pipe(res);
+        
+        readStream.on('error', (error) => {
+          console.error('[downloadObject] Stream error:', error);
+          if (!res.headersSent) {
+            res.status(500).json({ error: 'Stream error' });
+          }
+        });
+
+      } else {
+        // Full file download (still using stream for efficiency)
+        res.status(200);
+        res.set({
+          'Content-Type': contentType,
+          'Content-Length': size.toString(),
+          'Cache-Control': cacheControl,
+          'Accept-Ranges': 'bytes',
+          'ETag': etag,
+        });
+
+        const readStream = file.createReadStream();
+        readStream.pipe(res);
+
+        readStream.on('error', (error) => {
+          console.error('[downloadObject] Stream error:', error);
+          if (!res.headersSent) {
+            res.status(500).json({ error: 'Stream error' });
+          }
+        });
+      }
+
     } catch (error) {
-      console.error("Error downloading file from Firebase:", error);
+      console.error('[downloadObject] Error:', error);
       if (!res.headersSent) {
-        res.status(500).json({ error: "Error downloading file" });
+        res.status(500).json({ error: 'Error downloading file' });
       }
     }
   }
@@ -137,8 +259,6 @@ export class ObjectStorageService {
     }
 
     const entityId = parts.slice(1).join("/");
-    console.log('[getObjectEntityFile] entityId:', entityId);
-    
     const bucket = await getFirebaseStorageBucket();
     
     // Try public directory first
@@ -191,8 +311,6 @@ export class ObjectStorageService {
     rawPath: string,
     aclPolicy: any
   ): Promise<string> {
-    // Firebase Storage handles ACL differently
-    // For now, just normalize the path
     return await this.normalizeObjectEntityPath(rawPath);
   }
 
@@ -201,9 +319,6 @@ export class ObjectStorageService {
     objectFile: any;
     requestedPermission?: any;
   }): Promise<boolean> {
-    // Simplified access control for Firebase
-    // Public files are always accessible
-    // Private files require authentication
     return true;
   }
 

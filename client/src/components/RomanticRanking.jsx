@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Crown, Bookmark, Clock, Sparkles } from 'lucide-react';
 import { t } from 'i18next';
@@ -17,19 +17,18 @@ const Ranking = () => {
     const [posts, setPosts] = useState([]);
     const [loadingPosts, setLoadingPosts] = useState(true);
     const [videoDurations, setVideoDurations] = useState({});
-    const [videoThumbnails, setVideoThumbnails] = useState({}); // 動画から生成したサムネイル
 
-    // クリック機能
-    const handleVideoClick = (post) => {
+    // クリック機能（useCallbackでメモ化）
+    const handleVideoClick = useCallback((post) => {
         navigate(`/video/${post.id}`);
-    };
+    }, [navigate]);
 
-    const handleAccountClick = (post, e) => {
+    const handleAccountClick = useCallback((post, e) => {
         e.stopPropagation();
         navigate(`/profile/${post.user.id}`);
-    };
+    }, [navigate]);
 
-    const handleLikeClick = (postId, e) => {
+    const handleLikeClick = useCallback((postId, e) => {
         e.stopPropagation();
         const wasLiked = localLikedPosts.has(postId);
         
@@ -75,9 +74,9 @@ const Ranking = () => {
             );
             updateLikedCount(wasLiked ? 1 : -1);
         });
-    };
+    }, [localLikedPosts, toggleLike, updateLikedCount]);
 
-    const handleSaveClick = (postId, e) => {
+    const handleSaveClick = useCallback((postId, e) => {
         e.stopPropagation();
         const wasSaved = localSavedPosts.has(postId);
         
@@ -123,56 +122,10 @@ const Ranking = () => {
             );
             updateSavedCount(wasSaved ? 1 : -1);
         });
-    };
+    }, [localSavedPosts, toggleSave, updateSavedCount]);
 
-    // 動画から最初のフレームを抽出してサムネイルを生成する関数
-    const generateVideoThumbnail = (videoUrl) => {
-        return new Promise((resolve, reject) => {
-            const video = document.createElement('video');
-            video.crossOrigin = 'anonymous';
-            video.preload = 'metadata';
-            video.muted = true;
-            
-            video.onloadeddata = () => {
-                // 動画の最初のフレーム（0.1秒の位置）に移動
-                video.currentTime = 0.1;
-            };
-            
-            video.onseeked = () => {
-                try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth || 640;
-                    canvas.height = video.videoHeight || 360;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    
-                    // canvasをData URLに変換
-                    const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    
-                    // クリーンアップ
-                    video.remove();
-                    canvas.remove();
-                    
-                    resolve(thumbnailUrl);
-                } catch (error) {
-                    console.error('サムネイル生成エラー:', error);
-                    reject(error);
-                }
-            };
-            
-            video.onerror = (error) => {
-                console.error('動画読み込みエラー:', error);
-                reject(error);
-            };
-            
-            video.src = videoUrl;
-            video.load();
-        });
-    };
-
-    // URLをプロキシURLに変換する関数
-    const convertToProxyUrl = (url) => {
+    // URLをプロキシURLに変換する関数（useCallbackでメモ化）
+    const convertToProxyUrl = useCallback((url) => {
         if (!url) return null;
         
         // すでにプロキシURLの場合はそのまま返す
@@ -185,22 +138,33 @@ const Ranking = () => {
             return `/api/proxy/public/${fileName}`;
         }
         
-        // Google Cloud Storage URLをプロキシURLに変換
-        // 例: https://storage.googleapis.com/BUCKET_NAME/public/file.mp4
-        if (url.includes('storage.googleapis.com')) {
-            const match = url.match(/\/(public|\.private)\/([^?]+)/);
-            if (match) {
-                const folder = match[1];  // 'public' または '.private'
-                const fileName = match[2]; // ファイル名
-                return `/api/proxy/${folder}/${fileName}`;
+        // Firebase Storage URL（エンコード済み）をプロキシURLに変換
+        // 例: https://storage.googleapis.com/.../ o/public%2Ffile.mp4 → /api/proxy/public/file.mp4
+        if (url.includes('firebasestorage.googleapis.com') || url.includes('storage.googleapis.com')) {
+            try {
+                const urlObj = new URL(url);
+                // パス名をデコード：/v0/b/BUCKET/o/public%2Ffile.mp4 → public/file.mp4
+                const pathMatch = urlObj.pathname.match(/\/o\/(.+)$/);
+                if (pathMatch) {
+                    const decodedPath = decodeURIComponent(pathMatch[1]);
+                    // public/file.mp4 → ['public', 'file.mp4']
+                    const parts = decodedPath.split('/');
+                    if (parts.length >= 2) {
+                        const folder = parts[0]; // 'public' or 'private'
+                        const fileName = parts.slice(1).join('/'); // 'file.mp4'
+                        return `/api/proxy/${folder}/${fileName}`;
+                    }
+                }
+            } catch (e) {
+                console.error('URL parse error:', e);
             }
         }
         
         return url;
-    };
+    }, []);
 
-    // 新しさボーナスを計算する関数
-    const calculateFreshnessBonus = (timestamp) => {
+    // 新しさボーナスを計算する関数（useCallbackでメモ化）
+    const calculateFreshnessBonus = useCallback((timestamp) => {
         if (!timestamp) return 0;
         
         const now = new Date();
@@ -215,7 +179,7 @@ const Ranking = () => {
         if (diffInHours < 168) return 20;
         // それ以降: ボーナスなし
         return 0;
-    };
+    }, []);
 
     // Firestoreから人気投稿を取得
     useEffect(() => {
@@ -388,37 +352,6 @@ const Ranking = () => {
         fetchRankingPosts();
     }, []);
 
-    // サムネイルがない動画の最初のフレームを自動生成
-    useEffect(() => {
-        const generateMissingThumbnails = async () => {
-            for (const post of posts) {
-                // サムネイルがなく、動画URLがある場合
-                if (!post.thumbnail && post.videoUrl) {
-                    // すでに生成済みの場合はスキップ
-                    if (videoThumbnails[post.id]) continue;
-                    
-                    try {
-                        console.log(`🎬 動画サムネイルを生成中: ${post.id}`);
-                        const thumbnailDataUrl = await generateVideoThumbnail(post.videoUrl);
-                        
-                        setVideoThumbnails(prev => ({
-                            ...prev,
-                            [post.id]: thumbnailDataUrl
-                        }));
-                        
-                        console.log(`✅ サムネイル生成完了: ${post.id}`);
-                    } catch (error) {
-                        console.error(`❌ サムネイル生成失敗: ${post.id}`, error);
-                    }
-                }
-            }
-        };
-        
-        if (posts.length > 0) {
-            generateMissingThumbnails();
-        }
-    }, [posts]);
-    
     // 各動画の再生時間を取得
     useEffect(() => {
         const loadVideoDurations = async () => {
@@ -589,10 +522,9 @@ const Ranking = () => {
                         >
                             {/* サムネイル */}
                             <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
-                                {(videoThumbnails[post.id] || post.thumbnail) ? (
-                                    // 生成されたサムネイルまたは元のサムネイルを表示
+                                {post.thumbnail ? (
                                     <motion.img
-                                        src={videoThumbnails[post.id] || post.thumbnail}
+                                        src={post.thumbnail}
                                         alt={post.title}
                                         loading="lazy"
                                         className="w-full h-full object-cover"
@@ -608,12 +540,10 @@ const Ranking = () => {
                                         }}
                                         whileHover={{ scale: 1.15 }}
                                         onError={(e) => {
-                                            console.error('Image thumbnail error:', e.target.src);
                                             e.target.src = '/genre-1.png';
                                         }}
                                     />
                                 ) : (
-                                    // サムネイルがない場合（生成中の場合も含む）
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200">
                                         <img 
                                             src="/genre-1.png" 

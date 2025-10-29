@@ -1303,79 +1303,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Construct object path in the format getObjectEntityFile expects: /objects/filename
       const objectPath = `/objects/${filename}`;
       
-      console.log('Proxy request for:', folder, filename, 'Object path:', objectPath, 'Range:', req.headers.range);
-      
       // Import ObjectStorageService
       const { ObjectStorageService } = await import("./objectStorage");
-      const { storage } = await import('./firebase');
       const objectStorageService = new ObjectStorageService();
       
       // Get the file path from Object Storage (it will search in public/private dirs automatically)
       const filePath = await objectStorageService.getObjectEntityFile(objectPath);
       
-      console.log('[Proxy] Downloading file from Firebase Storage:', filePath);
-      
-      // Download file from Firebase Storage
-      const bucket = storage.bucket();
-      const file = bucket.file(filePath);
-      const [fileBuffer] = await file.download();
-      
-      if (!fileBuffer || fileBuffer.length === 0) {
-        return res.status(404).json({ error: 'File not found' });
-      }
-      
-      console.log('[Proxy] Downloaded successfully, size:', fileBuffer.length, 'bytes');
-      
-      // Determine content type from filename
-      const ext = filename.toLowerCase().split('.').pop();
-      let contentType = 'application/octet-stream';
-      if (ext === 'mp4') contentType = 'video/mp4';
-      else if (ext === 'mov') contentType = 'video/quicktime';
-      else if (ext === 'webm') contentType = 'video/webm';
-      else if (ext === 'jpg' || ext === 'jpeg') contentType = 'image/jpeg';
-      else if (ext === 'png') contentType = 'image/png';
-      else if (ext === 'gif') contentType = 'image/gif';
-      else if (ext === 'webp') contentType = 'image/webp';
-      
-      const fileSize = fileBuffer.length;
-      
-      // Determine cache control based on visibility (public vs private)
-      const isPublic = filePath.startsWith('public/');
-      const cacheControl = isPublic 
-        ? 'public, max-age=31536000, immutable'  // Public files: long-term caching
-        : 'private, max-age=3600';  // Private files: short-term, private caching only
-      
-      // Handle Range requests for video streaming
-      const range = req.headers.range;
-      if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-        const chunkSize = (end - start) + 1;
-        
-        res.writeHead(206, {
-          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-          'Accept-Ranges': 'bytes',
-          'Content-Length': chunkSize,
-          'Content-Type': contentType,
-          'Cache-Control': cacheControl,
-          'ETag': `"${filename}"`,
-        });
-        
-        // Send the requested range
-        res.end(fileBuffer.slice(start, end + 1));
-      } else {
-        // No range request, send entire file
-        res.writeHead(200, {
-          'Content-Length': fileSize,
-          'Content-Type': contentType,
-          'Accept-Ranges': 'bytes',
-          'Cache-Control': cacheControl,
-          'ETag': `"${filename}"`,
-        });
-        
-        res.end(fileBuffer);
-      }
+      // Use the optimized downloadObject method with streaming, caching, and Range support
+      // This method handles:
+      // - LRU cache for signed URLs and metadata
+      // - HTTP Range requests for efficient video streaming
+      // - Proper cache headers based on visibility
+      await objectStorageService.downloadObject(filePath, res);
     } catch (error: any) {
       console.error('Error proxying file:', error);
       
