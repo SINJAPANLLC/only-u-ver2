@@ -465,13 +465,13 @@ const Ranking = () => {
         <div className="mb-12">
             {/* Header */}
             <div className="mb-6">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
                     <motion.div
                         whileHover={{ scale: 1.1, rotate: -10 }}
                         transition={{ duration: 0.3 }}
                         className="mr-2 p-1.5 rounded-lg bg-gradient-to-br from-pink-400 to-pink-600 shadow-md"
                     >
-                        <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white" strokeWidth={2.5} />
+                        <Crown className="w-5 h-5 text-white fill-white" strokeWidth={2.5} />
                     </motion.div>
                     総合ランキング
                 </h2>
@@ -641,7 +641,7 @@ const RankingCard = React.memo(({
                         className="absolute top-2 left-2 z-10"
                     >
                         <div className={`
-                            w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-base shadow-lg
+                            w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-base shadow-lg
                             ${index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600' : ''}
                             ${index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-500' : ''}
                             ${index === 2 ? 'bg-gradient-to-br from-amber-600 to-amber-800' : ''}
@@ -657,14 +657,14 @@ const RankingCard = React.memo(({
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: "spring" }}
-                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold shadow-lg z-10"
+                        className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10"
                     >
                         NEW
                     </motion.div>
                 )}
 
                 {/* 再生時間 */}
-                <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs font-medium flex items-center gap-1">
+                <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
                     <Clock size={12} strokeWidth={2.5} />
                     {videoDurations[post.id] || post.duration}
                 </div>
@@ -676,9 +676,9 @@ const RankingCard = React.memo(({
             </div>
 
             {/* 投稿情報 */}
-            <div className="p-3 sm:p-4">
+            <div className="p-4">
                 {/* タイトル */}
-                <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base group-hover:text-pink-600 transition-colors">
+                <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 text-base group-hover:text-pink-600 transition-colors">
                     {post.title}
                 </h3>
 
@@ -688,7 +688,7 @@ const RankingCard = React.memo(({
                     onClick={(e) => handleAccountClick(post, e)}
                     data-testid={`user-link-${post.id}`}
                 >
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-pink-200 to-pink-300 flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-pink-200 to-pink-300 flex-shrink-0">
                         {post.user.avatar ? (
                             <img 
                                 src={post.user.avatar} 
@@ -696,13 +696,13 @@ const RankingCard = React.memo(({
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center text-pink-600 font-bold text-xs sm:text-sm">
+                            <div className="w-full h-full flex items-center justify-center text-pink-600 font-bold text-sm">
                                 {post.user.name.charAt(0)}
                             </div>
                         )}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm text-gray-700 font-medium truncate">{post.user.name}</p>
+                        <p className="text-sm text-gray-700 font-medium truncate">{post.user.name}</p>
                         <p className="text-xs text-gray-500">{post.postedDate}</p>
                     </div>
                 </div>
@@ -712,7 +712,7 @@ const RankingCard = React.memo(({
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => handleLikeClick(post.id, e)}
-                        className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all ${
                             localLikedPosts.has(post.id)
                                 ? 'bg-pink-100 text-pink-600'
                                 : 'hover:bg-gray-100 text-gray-600'
@@ -724,13 +724,13 @@ const RankingCard = React.memo(({
                             className={localLikedPosts.has(post.id) ? 'fill-current' : ''} 
                             strokeWidth={2.5}
                         />
-                        <span className="text-xs sm:text-sm font-medium">{post.likes}</span>
+                        <span className="text-sm font-medium">{post.likes}</span>
                     </motion.button>
 
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => handleSaveClick(post.id, e)}
-                        className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all ${
                             localSavedPosts.has(post.id)
                                 ? 'bg-pink-100 text-pink-600'
                                 : 'hover:bg-gray-100 text-gray-600'
@@ -742,7 +742,7 @@ const RankingCard = React.memo(({
                             className={localSavedPosts.has(post.id) ? 'fill-current' : ''} 
                             strokeWidth={2.5}
                         />
-                        <span className="text-xs sm:text-sm font-medium">{post.bookmarks}</span>
+                        <span className="text-sm font-medium">{post.bookmarks}</span>
                     </motion.button>
                 </div>
             </div>

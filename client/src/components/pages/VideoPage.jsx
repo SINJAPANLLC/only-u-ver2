@@ -594,7 +594,7 @@ const VideoPage = () => {
                                 ref={videoRef}
                                 src={videoData.videoUrl}
                                 poster={videoData.thumbnail}
-                                className={`w-full h-full ${isVerticalVideo ? 'object-cover' : 'object-contain'}`}
+                                className="w-full h-full object-contain"
                                 loop
                                 playsInline
                                 autoPlay
