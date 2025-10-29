@@ -199,9 +199,19 @@ const Ranking = () => {
                     const freshnessBonus = calculateFreshnessBonus(data.createdAt);
                     
                     // サムネイルURLを取得してプロキシURLに変換
-                    const originalThumbnail = data.files && data.files.length > 0 
-                        ? (data.files[0].thumbnailUrl || data.files[0].url) 
-                        : null;
+                    let originalThumbnail = null;
+                    if (data.files && data.files.length > 0) {
+                        const file = data.files[0];
+                        // サムネイルURLがある場合はそれを使用
+                        if (file.thumbnailUrl) {
+                            originalThumbnail = file.thumbnailUrl;
+                        }
+                        // サムネイルがなく、画像ファイルの場合は画像自体を使用
+                        else if (file.resourceType === 'image' || file.type?.startsWith('image/')) {
+                            originalThumbnail = file.url;
+                        }
+                        // サムネイルがなく、動画ファイルの場合はnullのまま（ビデオプレーヤーでカバーを表示）
+                    }
                     const proxyThumbnail = convertToProxyUrl(originalThumbnail);
                     
                     // 動画の実際のファイルURLを取得
