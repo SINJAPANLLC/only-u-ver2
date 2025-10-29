@@ -174,15 +174,18 @@ export class ObjectStorageService {
       // Get file metadata
       const { size, contentType, etag } = await this.getFileMetadata(filePath);
 
+      // Parse Range header
+      const range = res.req.headers.range;
+      
       // Check if client already has the file (ETag matching)
+      // CRITICAL: Skip 304 when Range header is present (iOS Safari requirement)
+      // Mobile Safari sends both Range and If-None-Match headers
+      // If we return 304, Safari never receives the requested byte range and playback fails
       const clientEtag = res.req.headers['if-none-match'];
-      if (clientEtag === etag) {
+      if (clientEtag === etag && !range) {
         res.status(304).end();
         return;
       }
-
-      // Parse Range header
-      const range = res.req.headers.range;
       const isPublic = filePath.startsWith('public/');
       const cacheControl = isPublic 
         ? `public, max-age=${cacheTtlSec}, immutable`
