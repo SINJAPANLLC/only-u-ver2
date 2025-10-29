@@ -7,27 +7,33 @@ import { join } from 'path';
 // Initialize Firebase Admin SDK if not already initialized
 if (!admin.apps.length) {
   try {
-    // Check if we're in production (VPS) and have a service account key file
-    const serviceAccountPath = join(process.cwd(), 'firebase-admin-key.json');
+    // Check if we're in production (VPS) - use NODE_ENV=production flag
+    const isProduction = process.env.NODE_ENV === 'production';
     
-    if (existsSync(serviceAccountPath)) {
-      // Production: Use service account key file
-      console.log('🔑 Initializing Firebase with service account key...');
+    if (isProduction) {
+      // Production (VPS): Use service account key file
+      const serviceAccountPath = join(process.cwd(), 'firebase-admin-key.json');
+      
+      if (!existsSync(serviceAccountPath)) {
+        throw new Error('firebase-admin-key.json not found in production environment');
+      }
+      
+      console.log('🔑 Initializing Firebase with service account key (Production)...');
       const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
       
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         storageBucket: 'onlyu1020-c6696.firebasestorage.app',
       });
-      console.log('✅ Firebase initialized with service account');
+      console.log('✅ Firebase initialized with service account (Production)');
     } else {
-      // Development: Use Application Default Credentials (Replit environment)
-      console.log('🔑 Initializing Firebase with default credentials...');
+      // Development (Replit): Use Application Default Credentials
+      console.log('🔑 Initializing Firebase with default credentials (Development/Replit)...');
       admin.initializeApp({
         projectId: 'onlyu1020-c6696',
         storageBucket: 'onlyu1020-c6696.firebasestorage.app',
       });
-      console.log('✅ Firebase initialized');
+      console.log('✅ Firebase initialized with default credentials (Development)');
     }
   } catch (error) {
     console.error('❌ Firebase initialization failed:', error);
