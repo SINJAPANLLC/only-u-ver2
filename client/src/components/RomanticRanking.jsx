@@ -221,7 +221,10 @@ const Ranking = () => {
                         else if (file.resourceType === 'image' || file.type?.startsWith('image/')) {
                             originalThumbnail = file.url;
                         }
-                        // サムネイルがなく、動画ファイルの場合はnullのまま（ビデオプレーヤーでカバーを表示）
+                        // サムネイルがなく、動画ファイルの場合は動画URL自体を使用（videoタグで最初のフレームを表示）
+                        else if (file.resourceType === 'video' || file.type?.startsWith('video/')) {
+                            originalThumbnail = file.url;
+                        }
                     }
                     const proxyThumbnail = convertToProxyUrl(originalThumbnail);
                     
