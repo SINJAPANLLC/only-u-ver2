@@ -131,6 +131,13 @@ const Ranking = () => {
         // すでにプロキシURLの場合はそのまま返す
         if (url.startsWith('/api/proxy/')) return url;
         
+        // /objects/で始まるURLをプロキシURLに変換
+        // 例: /objects/file.mp4 → /api/proxy/public/file.mp4
+        if (url.startsWith('/objects/')) {
+            const fileName = url.replace('/objects/', '');
+            return `/api/proxy/public/${fileName}`;
+        }
+        
         // Google Cloud Storage URLをプロキシURLに変換
         // 例: https://storage.googleapis.com/BUCKET_NAME/public/file.mp4
         if (url.includes('storage.googleapis.com')) {
