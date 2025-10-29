@@ -523,26 +523,42 @@ const Ranking = () => {
                             {/* サムネイル */}
                             <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
                                 {post.thumbnail ? (
-                                    <motion.img
-                                        src={post.thumbnail}
-                                        alt={post.title}
-                                        loading="lazy"
-                                        className="w-full h-full object-cover"
-                                        animate={{ 
-                                            scale: [1, 1.05, 1],
-                                            x: [0, 5, 0],
-                                            y: [0, -3, 0]
-                                        }}
-                                        transition={{ 
-                                            duration: 8,
-                                            repeat: Infinity,
-                                            ease: "easeInOut"
-                                        }}
-                                        whileHover={{ scale: 1.15 }}
-                                        onError={(e) => {
-                                            e.target.src = '/genre-1.png';
-                                        }}
-                                    />
+                                    post.thumbnail.match(/\.(mp4|mov|webm|MP4|MOV|WEBM)$/i) ? (
+                                        /* 動画の場合：最初のフレームを表示 */
+                                        <video
+                                            src={post.thumbnail}
+                                            className="w-full h-full object-cover"
+                                            preload="metadata"
+                                            muted
+                                            playsInline
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                e.target.nextElementSibling.style.display = 'flex';
+                                            }}
+                                        />
+                                    ) : (
+                                        /* 画像の場合：通常表示 */
+                                        <motion.img
+                                            src={post.thumbnail}
+                                            alt={post.title}
+                                            loading="lazy"
+                                            className="w-full h-full object-cover"
+                                            animate={{ 
+                                                scale: [1, 1.05, 1],
+                                                x: [0, 5, 0],
+                                                y: [0, -3, 0]
+                                            }}
+                                            transition={{ 
+                                                duration: 8,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            whileHover={{ scale: 1.15 }}
+                                            onError={(e) => {
+                                                e.target.src = '/genre-1.png';
+                                            }}
+                                        />
+                                    )
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200">
                                         <img 
@@ -553,6 +569,15 @@ const Ranking = () => {
                                         />
                                     </div>
                                 )}
+                                {/* エラー時のフォールバック */}
+                                <div className="hidden w-full h-full items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200">
+                                    <img 
+                                        src="/genre-1.png" 
+                                        alt={post.title}
+                                        loading="lazy"
+                                        className="w-full h-full object-cover opacity-50"
+                                    />
+                                </div>
                                 
                                 {/* ランキングバッジ */}
                                 <motion.div 
