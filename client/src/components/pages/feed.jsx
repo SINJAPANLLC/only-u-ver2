@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Bookmark, Share, MoreHorizontal, Play, Pause, Volume2, VolumeX, ArrowLeft, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Film, Maximize, Minimize, User } from 'lucide-react';
@@ -505,7 +505,7 @@ const SocialFeedScreen = () => {
   };
 
   // Handle video play/pause
-  const toggleVideoPlayback = () => {
+  const toggleVideoPlayback = useCallback(() => {
     if (videoRef.current) {
       try {
         if (isVideoPlaying) {
@@ -530,10 +530,10 @@ const SocialFeedScreen = () => {
         setIsVideoPlaying(false);
       }
     }
-  };
+  }, [isVideoPlaying]);
 
   // Handle mute toggle
-  const toggleMute = () => {
+  const toggleMute = useCallback(() => {
     if (videoRef.current) {
       try {
         videoRef.current.muted = !isMuted;
@@ -542,7 +542,7 @@ const SocialFeedScreen = () => {
         console.error("Error in toggleMute:", error);
       }
     }
-  };
+  }, [isMuted]);
 
   // Auto-play video when post changes
   useEffect(() => {
@@ -550,6 +550,17 @@ const SocialFeedScreen = () => {
       setIsVideoPlaying(true);
     }
   }, [currentPostIndex, posts]);
+  
+  // Cleanup: Stop video when component unmounts to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = '';
+        videoRef.current.load();
+      }
+    };
+  }, []); // Empty dependency array = only runs on unmount
 
   // Handle navigation
   const handleBottomNavClick = (path) => {
@@ -560,32 +571,32 @@ const SocialFeedScreen = () => {
   };
 
   // Handle post navigation
-  const goToNextPost = () => {
+  const goToNextPost = useCallback(() => {
     if (currentPostIndex < posts.length - 1 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPostIndex(currentPostIndex + 1);
       setTimeout(() => setIsTransitioning(false), 300);
     }
-  };
+  }, [currentPostIndex, posts.length, isTransitioning]);
 
-  const goToPreviousPost = () => {
+  const goToPreviousPost = useCallback(() => {
     if (currentPostIndex > 0 && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPostIndex(currentPostIndex - 1);
       setTimeout(() => setIsTransitioning(false), 300);
     }
-  };
+  }, [currentPostIndex, isTransitioning]);
 
   // Touch handlers for swipe
-  const handleTouchStart = (e) => {
+  const handleTouchStart = useCallback((e) => {
     setTouchStartY(e.targetTouches[0].clientY);
-  };
+  }, []);
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = useCallback((e) => {
     setTouchEndY(e.targetTouches[0].clientY);
-  };
+  }, []);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     if (!touchStartY || !touchEndY) return;
     
     const distance = touchStartY - touchEndY;
@@ -603,25 +614,25 @@ const SocialFeedScreen = () => {
     // タッチ位置をリセット
     setTouchStartY(null);
     setTouchEndY(null);
-  };
+  }, [touchStartY, touchEndY, goToNextPost, goToPreviousPost]);
 
   // Handle video click to navigate to creator profile
-  const handleVideoClick = () => {
+  const handleVideoClick = useCallback(() => {
     try {
       navigate(`/profile/${posts[currentPostIndex].userId}`);
     } catch (error) {
       console.error('Error navigating to profile:', error);
     }
-  };
+  }, [navigate, posts, currentPostIndex]);
 
   // Handle account click to navigate to profile
-  const handleAccountClick = (post) => {
+  const handleAccountClick = useCallback((post) => {
     try {
       navigate(`/profile/${post.userId}`);
     } catch (error) {
       console.error('Error navigating to profile:', error);
     }
-  };
+  }, [navigate]);
 
   // Handle fullscreen toggle
   const handleFullscreen = async (e) => {

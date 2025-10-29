@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -309,7 +309,7 @@ const VideoPage = () => {
     };
 
     // Handle video playback
-    const toggleVideoPlayback = () => {
+    const toggleVideoPlayback = useCallback(() => {
         if (videoRef.current) {
             try {
                 if (isVideoPlaying) {
@@ -331,10 +331,10 @@ const VideoPage = () => {
                 setIsVideoPlaying(false);
             }
         }
-    };
+    }, [isVideoPlaying]);
 
     // Handle mute toggle
-    const toggleMute = () => {
+    const toggleMute = useCallback(() => {
         if (videoRef.current) {
             try {
                 videoRef.current.muted = !isMuted;
@@ -343,10 +343,10 @@ const VideoPage = () => {
                 console.error("Error in toggleMute:", error);
             }
         }
-    };
+    }, [isMuted]);
 
     // Handle like toggle
-    const handleToggleLike = async (e) => {
+    const handleToggleLike = useCallback(async (e) => {
         try {
             e.stopPropagation();
             const wasLiked = localLikedPosts.has(videoData.id);
@@ -382,10 +382,10 @@ const VideoPage = () => {
         } catch (error) {
             console.error('Error in handleToggleLike:', error);
         }
-    };
+    }, [videoData, localLikedPosts, toggleLike, updateLikedCount]);
 
     // Handle bookmark toggle
-    const handleToggleBookmark = async (e) => {
+    const handleToggleBookmark = useCallback(async (e) => {
         try {
             e.stopPropagation();
             const wasSaved = localSavedPosts.has(videoData.id);
@@ -421,19 +421,19 @@ const VideoPage = () => {
         } catch (error) {
             console.error('Error in handleToggleBookmark:', error);
         }
-    };
+    }, [videoData, localSavedPosts, toggleSave, updateSavedCount]);
 
     // Handle profile navigation
-    const handleAccountClick = () => {
+    const handleAccountClick = useCallback(() => {
         try {
             navigate(`/profile/${videoData.userId}`);
         } catch (error) {
             console.error('Error navigating to profile:', error);
         }
-    };
+    }, [navigate, videoData]);
 
     // Handle share
-    const handleShare = async (e) => {
+    const handleShare = useCallback(async (e) => {
         e.stopPropagation();
         try {
             const postUrl = window.location.href;
@@ -459,7 +459,7 @@ const VideoPage = () => {
         } catch (error) {
             console.error('Error in share action:', error);
         }
-    };
+    }, [videoData]);
 
     // Handle fullscreen
     const handleFullscreen = async () => {
@@ -476,7 +476,7 @@ const VideoPage = () => {
         }
     };
 
-    // Auto-play video on mount
+    // Auto-play video on mount and cleanup on unmount
     useEffect(() => {
         if (videoRef.current && videoData && videoData.type === 'video') {
             videoRef.current.play().catch(e => {
@@ -484,6 +484,15 @@ const VideoPage = () => {
                 setIsVideoPlaying(false);
             });
         }
+        
+        // Cleanup: Stop video when component unmounts to prevent memory leaks
+        return () => {
+            if (videoRef.current) {
+                videoRef.current.pause();
+                videoRef.current.src = '';
+                videoRef.current.load();
+            }
+        };
     }, [videoData]);
 
     if (loading) {
