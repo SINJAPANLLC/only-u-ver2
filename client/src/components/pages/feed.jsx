@@ -931,7 +931,7 @@ const SocialFeedScreen = () => {
                     ref={videoRef}
                     src={posts[currentPostIndex].videoUrl}
                     poster={posts[currentPostIndex].thumbnail || posts[currentPostIndex].imageUrl}
-                    className={`w-full h-full ${isVerticalVideo ? 'object-cover' : 'object-contain'}`}
+                    className="w-full h-full object-contain"
                     playsInline
                     loop
                     muted={isMuted}
