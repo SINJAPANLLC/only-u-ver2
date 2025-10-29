@@ -41,8 +41,13 @@ The platform utilizes a modern web architecture comprising a React frontend buil
     - **LRU Cache System**: Implemented `lru-cache` library for file metadata caching (1-hour TTL) to reduce Firebase Storage API calls
     - **Streaming Optimization**: Range request support using `createReadStream` for efficient video streaming with 206 Partial Content responses
     - **Proxy URL Conversion**: Firebase Storage URLs automatically converted to optimized proxy endpoints (`/api/proxy/:folder/:filename`)
-    - **React Performance**: Applied `useCallback`, `useMemo` to RomanticRanking component to minimize re-renders
-    - **File**: `server/objectStorage.ts` (LRU cache + streaming), `server/routes.ts` (proxy endpoint), `client/src/components/RomanticRanking.jsx` (URL conversion + React optimization)
+    - **React Performance Optimizations**:
+      - Applied `useCallback`, `useMemo` to RomanticRanking component to minimize re-renders
+      - **VideoPage.jsx**: All event handlers (toggleVideoPlayback, toggleMute, handleShare, handleAccountClick, handleVideoClick) memoized with useCallback
+      - **feed.jsx**: Navigation handlers (goToNextPost, goToPreviousPost), touch handlers (handleTouchStart, handleTouchMove, handleTouchEnd), and interaction handlers memoized with useCallback
+      - **Memory Leak Prevention**: Cleanup functions properly separated - auto-play management runs on post change, video resource cleanup runs only on component unmount
+      - **Bug Fix**: Fixed feed.jsx video playback issue by separating cleanup into unmount-only useEffect with empty dependency array
+    - **Files**: `server/objectStorage.ts` (LRU cache + streaming), `server/routes.ts` (proxy endpoint), `client/src/components/RomanticRanking.jsx`, `client/src/components/pages/VideoPage.jsx`, `client/src/components/pages/feed.jsx` (React optimization + memory leak prevention)
 *   **Deployment Configuration (Autoscale)**:
     - **Changed from Reserved VM to Autoscale** (October 27, 2025): Autoscale is recommended for web applications with HTTP/WebSocket traffic and provides better uptime (99.95% vs 99.9%)
     - Build: `npm run build` (Vite frontend + esbuild backend bundling to dist/)
