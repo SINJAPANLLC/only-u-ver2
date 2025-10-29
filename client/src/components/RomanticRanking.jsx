@@ -17,6 +17,7 @@ const Ranking = () => {
     const [posts, setPosts] = useState([]);
     const [loadingPosts, setLoadingPosts] = useState(true);
     const [videoDurations, setVideoDurations] = useState({});
+    const [videoThumbnails, setVideoThumbnails] = useState({}); // 動画から生成したサムネイル
 
     // クリック機能
     const handleVideoClick = (post) => {
@@ -121,6 +122,52 @@ const Ranking = () => {
                 )
             );
             updateSavedCount(wasSaved ? 1 : -1);
+        });
+    };
+
+    // 動画から最初のフレームを抽出してサムネイルを生成する関数
+    const generateVideoThumbnail = (videoUrl) => {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.crossOrigin = 'anonymous';
+            video.preload = 'metadata';
+            video.muted = true;
+            
+            video.onloadeddata = () => {
+                // 動画の最初のフレーム（0.1秒の位置）に移動
+                video.currentTime = 0.1;
+            };
+            
+            video.onseeked = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 360;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // canvasをData URLに変換
+                    const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    // クリーンアップ
+                    video.remove();
+                    canvas.remove();
+                    
+                    resolve(thumbnailUrl);
+                } catch (error) {
+                    console.error('サムネイル生成エラー:', error);
+                    reject(error);
+                }
+            };
+            
+            video.onerror = (error) => {
+                console.error('動画読み込みエラー:', error);
+                reject(error);
+            };
+            
+            video.src = videoUrl;
+            video.load();
         });
     };
 
@@ -340,6 +387,37 @@ const Ranking = () => {
 
         fetchRankingPosts();
     }, []);
+
+    // サムネイルがない動画の最初のフレームを自動生成
+    useEffect(() => {
+        const generateMissingThumbnails = async () => {
+            for (const post of posts) {
+                // サムネイルがなく、動画URLがある場合
+                if (!post.thumbnail && post.videoUrl) {
+                    // すでに生成済みの場合はスキップ
+                    if (videoThumbnails[post.id]) continue;
+                    
+                    try {
+                        console.log(`🎬 動画サムネイルを生成中: ${post.id}`);
+                        const thumbnailDataUrl = await generateVideoThumbnail(post.videoUrl);
+                        
+                        setVideoThumbnails(prev => ({
+                            ...prev,
+                            [post.id]: thumbnailDataUrl
+                        }));
+                        
+                        console.log(`✅ サムネイル生成完了: ${post.id}`);
+                    } catch (error) {
+                        console.error(`❌ サムネイル生成失敗: ${post.id}`, error);
+                    }
+                }
+            }
+        };
+        
+        if (posts.length > 0) {
+            generateMissingThumbnails();
+        }
+    }, [posts]);
     
     // 各動画の再生時間を取得
     useEffect(() => {
@@ -511,54 +589,37 @@ const Ranking = () => {
                         >
                             {/* サムネイル */}
                             <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
-                                {post.thumbnail ? (
-                                    (post.thumbnail.includes('.mp4') || post.thumbnail.includes('.MP4') || post.thumbnail.includes('.quicktime') || post.thumbnail.includes('.MOV') || post.thumbnail.includes('.mov')) ? (
-                                        // 動画ファイルの場合、最初のフレームを表示
-                                        <video
-                                            src={post.thumbnail}
-                                            className="w-full h-full object-cover"
-                                            preload="none"
-                                            loading="lazy"
-                                            muted
-                                            playsInline
-                                            style={{ pointerEvents: 'none' }}
-                                            onError={(e) => {
-                                                console.error('Video thumbnail error:', e);
-                                                e.target.style.display = 'none';
-                                            }}
-                                        />
-                                    ) : (
-                                        // 画像サムネイルの場合
-                                        <motion.img
-                                            src={post.thumbnail}
-                                            alt={post.title}
-                                            loading="lazy"
-                                            className="w-full h-full object-cover"
-                                            animate={{ 
-                                                scale: [1, 1.05, 1],
-                                                x: [0, 5, 0],
-                                                y: [0, -3, 0]
-                                            }}
-                                            transition={{ 
-                                                duration: 8,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
-                                            }}
-                                            whileHover={{ scale: 1.15 }}
-                                            onError={(e) => {
-                                                console.error('Image thumbnail error:', e.target.src);
-                                                e.target.src = '/genre-1.png';
-                                            }}
-                                        />
-                                    )
+                                {(videoThumbnails[post.id] || post.thumbnail) ? (
+                                    // 生成されたサムネイルまたは元のサムネイルを表示
+                                    <motion.img
+                                        src={videoThumbnails[post.id] || post.thumbnail}
+                                        alt={post.title}
+                                        loading="lazy"
+                                        className="w-full h-full object-cover"
+                                        animate={{ 
+                                            scale: [1, 1.05, 1],
+                                            x: [0, 5, 0],
+                                            y: [0, -3, 0]
+                                        }}
+                                        transition={{ 
+                                            duration: 8,
+                                            repeat: Infinity,
+                                            ease: "easeInOut"
+                                        }}
+                                        whileHover={{ scale: 1.15 }}
+                                        onError={(e) => {
+                                            console.error('Image thumbnail error:', e.target.src);
+                                            e.target.src = '/genre-1.png';
+                                        }}
+                                    />
                                 ) : (
-                                    // サムネイルがない場合
+                                    // サムネイルがない場合（生成中の場合も含む）
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-200">
                                         <img 
                                             src="/genre-1.png" 
                                             alt={post.title}
                                             loading="lazy"
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover opacity-50"
                                         />
                                     </div>
                                 )}
